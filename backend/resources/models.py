@@ -1,3 +1,31 @@
 from django.db import models
+from accounts.models import User
 
-# Create your models here.
+
+class Resource(models.Model):
+    CATEGORY_CHOICES = [
+        ('notes', 'Notes'),
+        ('pyq', 'Previous Year Questions'),
+        ('book', 'Books'),
+        ('assignment', 'Assignments'),
+        ('other', 'Other'),
+    ]
+
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    category = models.CharField(
+        max_length=20,
+        choices=CATEGORY_CHOICES,
+        default='notes'
+    )
+    subject = models.CharField(max_length=100)
+    file = models.FileField(upload_to='resources/')
+    uploaded_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='resources'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
