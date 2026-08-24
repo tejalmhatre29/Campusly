@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Login from './Components/Login';
 import Register from './Components/Register';
 import Home from './Components/Home';
+import './App.css';
 
 function App() {
     const [showLogin, setShowLogin] = useState(true);
@@ -16,7 +17,10 @@ function App() {
     return (
         <div>
             {showLogin ? (
-                <Login onLogin={() => setIsLoggedIn(true)} />
+                <Login
+    onLogin={() => setIsLoggedIn(true)}
+    onRegister={() => setShowLogin(false)}
+/>
             ) : (
                 <Register />
             )}

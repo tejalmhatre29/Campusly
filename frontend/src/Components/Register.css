@@ -1,0 +1,98 @@
+.register-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f5f7fb;
+    padding: 40px 20px;
+}
+
+.register-card {
+    width: 650px;
+    background: white;
+    padding: 40px;
+    border-radius: 18px;
+    border: 1px solid #e7eaf0;
+    box-shadow: 0 20px 50px rgba(20, 30, 50, 0.08);
+}
+
+.register-logo {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.register-subtitle {
+    text-align: center;
+    color: #737d8f;
+    margin: 10px 0 30px;
+}
+
+.register-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.register-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.register-field.full {
+    grid-column: span 2;
+}
+
+.register-field label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.register-field input {
+    padding: 12px;
+    border: 1px solid #dfe3ea;
+    border-radius: 9px;
+    font-size: 14px;
+    outline: none;
+}
+
+.register-field input:focus {
+    border-color: #172033;
+}
+
+.register-button {
+    grid-column: span 2;
+    padding: 13px;
+    background: #172033;
+    color: white;
+    border-radius: 9px;
+    font-size: 15px;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.register-switch {
+    text-align: center;
+    margin-top: 22px;
+    color: #687386;
+    font-size: 14px;
+}
+
+.register-switch button {
+    background: none;
+    color: #172033;
+    font-weight: 600;
+    margin-left: 5px;
+}
+
+@media (max-width: 650px) {
+    .register-form {
+        grid-template-columns: 1fr;
+    }
+
+    .register-field.full,
+    .register-button {
+        grid-column: span 1;
+    }
+}

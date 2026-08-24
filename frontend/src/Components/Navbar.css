@@ -1,0 +1,39 @@
+.navbar {
+    height: 72px;
+    background: white;
+    border-bottom: 1px solid #e8ebf2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 7%;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: #172033;
+}
+
+.nav-links {
+    display: flex;
+    gap: 6px;
+}
+
+.nav-btn {
+    background: transparent;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: #596579;
+    font-size: 14px;
+}
+
+.nav-btn:hover {
+    background: #f1f4f9;
+    color: #172033;
+}
+
+@media (max-width: 800px) {
+    .nav-links {
+        display: none;
+    }
+}
