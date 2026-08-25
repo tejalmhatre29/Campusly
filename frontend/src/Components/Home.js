@@ -1,10 +1,10 @@
 import Navbar from './Navbar';
 import './Home.css';
 
-function Home() {
+function Home({ onNavigate }) {
     return (
         <div className="home-page">
-            <Navbar />
+            <Navbar onNavigate={onNavigate} />
 
             <main className="home-content">
                 <section className="hero-section">

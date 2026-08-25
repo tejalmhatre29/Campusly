@@ -1,16 +1,30 @@
 import './Navbar.css';
 
-function Navbar() {
+function Navbar({ onNavigate }) {
     return (
-        <nav>
-            <h2>Campusly 🎓</h2>
+        <nav className="navbar">
+            <div className="logo">Campusly 🎓</div>
 
-            <div>
-                <button>Home</button>
-                <button>Resources</button>
-                <button>Events</button>
-                <button>Lost & Found</button>
-                <button>Profile</button>
+            <div className="nav-links">
+                <button className="nav-btn" onClick={() => onNavigate('home')}>
+                    Home
+                </button>
+
+                <button className="nav-btn" onClick={() => onNavigate('resources')}>
+                    Resources
+                </button>
+
+                <button className="nav-btn">
+                    Events
+                </button>
+
+                <button className="nav-btn">
+                    Lost & Found
+                </button>
+
+                <button className="nav-btn">
+                    Profile
+                </button>
             </div>
         </nav>
     );
