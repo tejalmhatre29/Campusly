@@ -23,9 +23,9 @@ function Home({ onNavigate }) {
                             your campus community.
                         </p>
 
-                        <button className="primary-btn">
-                            Explore Resources
-                        </button>
+                        <button className="nav-btn" onClick={() => onNavigate('resources')}>
+                    Resources
+                </button>
                     </div>
 
                     <div className="hero-card">

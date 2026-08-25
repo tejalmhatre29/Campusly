@@ -96,3 +96,64 @@
         grid-template-columns: 1fr;
     }
 }
+
+.resources-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.add-resource-btn {
+    padding: 12px 20px;
+    background: #172033;
+    color: white;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.add-resource-btn:hover {
+    opacity: 0.9;
+}
+
+.resource-form-card {
+    background: white;
+    border: 1px solid #e5e8ef;
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 30px;
+}
+
+.resource-form-card h2 {
+    margin-bottom: 20px;
+}
+
+.resource-form-card form {
+    display: grid;
+    gap: 14px;
+}
+
+.resource-form-card input,
+.resource-form-card select,
+.resource-form-card textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #dfe3ea;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.resource-form-card textarea {
+    resize: vertical;
+}
+
+.resource-form-card button {
+    width: fit-content;
+    padding: 12px 20px;
+    background: #172033;
+    color: white;
+    border-radius: 8px;
+    font-weight: 600;
+}
