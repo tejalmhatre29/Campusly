@@ -3,6 +3,7 @@ import Login from './Components/Login';
 import Register from './Components/Register';
 import Home from './Components/Home';
 import Resources from './Components/Resources';
+import Events from './Components/Events';
 import './App.css';
 
 function App() {
@@ -35,9 +36,17 @@ function App() {
         );
     }
 
-    if (currentPage === 'resources') {
+   if (currentPage === 'resources') {
     return (
         <Resources
+            onNavigate={(page) => setCurrentPage(page)}
+        />
+    );
+}
+
+if (currentPage === 'events') {
+    return (
+        <Events
             onNavigate={(page) => setCurrentPage(page)}
         />
     );

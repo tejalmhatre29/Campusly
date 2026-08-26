@@ -6,6 +6,7 @@ import "./Resources.css";
 function Resources({ onNavigate }) {
   const [resources, setResources] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     title: "",
     subject: "",
@@ -14,19 +15,20 @@ function Resources({ onNavigate }) {
     file: null,
   });
 
-  useEffect(() => {
+useEffect(() => {
     const fetchResources = async () => {
-      try {
-        const response = await API.get('resources/');
-
-        setResources(response.data);
-      } catch (error) {
-        console.error("Error fetching resources:", error);
-      }
+        try {
+            const response = await API.get('resources/');
+            setResources(response.data);
+        } catch (error) {
+            console.error('Error fetching resources:', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     fetchResources();
-  }, []);
+}, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -41,7 +43,7 @@ function Resources({ onNavigate }) {
     e.preventDefault();
 
     try {
-      const token = localStorage.getItem("access_token");
+      // const token = localStorage.getItem("access_token");
 
       const data = new FormData();
 
@@ -72,7 +74,8 @@ function Resources({ onNavigate }) {
         file: null,
       });
 
-      window.location.reload();
+      const response = await API.get('resources/');
+setResources(response.data);
     } catch (error) {
     console.error('Upload error:', error);
     console.log('Server response:', error.response?.data);
@@ -151,12 +154,17 @@ function Resources({ onNavigate }) {
 
         {/* Resources */}
         <div className="resource-grid">
-          {resources.length === 0 ? (
-            <div className="empty-resources">
-              <h3>No resources yet</h3>
-              <p>Be the first student to upload a resource!</p>
-            </div>
-          ) : (
+          {loading ? (
+    <div className="loading-resources">
+        <div className="loader"></div>
+        <p>Loading resources...</p>
+    </div>
+) : resources.length === 0 ? (
+    <div className="empty-resources">
+        <h3>No resources yet</h3>
+        <p>Be the first student to upload a resource!</p>
+    </div>
+) : (
             resources.map((resource) => (
               <div className="resource-card" key={resource.id}>
                 <span className="resource-category">{resource.category}</span>

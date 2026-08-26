@@ -20,9 +20,12 @@ function Navbar({ onNavigate }) {
                     Resources
                 </button>
 
-                <button className="nav-btn">
-                    Events
-                </button>
+                <button
+    className="nav-btn"
+    onClick={() => onNavigate('events')}
+>
+    Events
+</button>
 
                 <button className="nav-btn">
                     Lost & Found
