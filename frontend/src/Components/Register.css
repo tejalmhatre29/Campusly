@@ -96,3 +96,16 @@
         grid-column: span 1;
     }
 }
+
+.logout-btn {
+    border: none;
+    background: transparent;
+    color: #c0392b;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 8px 12px;
+}
+
+.logout-btn:hover {
+    opacity: 0.75;
+}

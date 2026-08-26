@@ -157,3 +157,9 @@
     border-radius: 8px;
     font-weight: 600;
 }
+
+.resource-contact {
+    color: #596579;
+    font-size: 13px !important;
+    margin-top: 6px;
+}

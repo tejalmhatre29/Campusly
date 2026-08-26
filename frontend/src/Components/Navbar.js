@@ -1,6 +1,12 @@
 import './Navbar.css';
 
 function Navbar({ onNavigate }) {
+
+    const handleLogout = () => {
+        localStorage.removeItem('access_token');
+        window.location.reload();
+    };
+
     return (
         <nav className="navbar">
             <div className="logo">Campusly 🎓</div>
@@ -24,6 +30,10 @@ function Navbar({ onNavigate }) {
 
                 <button className="nav-btn">
                     Profile
+                </button>
+
+                <button className="logout-btn" onClick={handleLogout}>
+                    Logout
                 </button>
             </div>
         </nav>
