@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import API from '../api';
 import Navbar from './Navbar';
+import { jwtDecode } from "jwt-decode";
 import './Events.css';
 
 function Events({ onNavigate }) {
     const [events, setEvents] = useState([]);
     const [showForm, setShowForm] = useState(false);
+    const [loading, setLoading] = useState(true);
+const [deletingId, setDeletingId] = useState(null);
     const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -14,18 +17,33 @@ function Events({ onNavigate }) {
     event_date: ''
 });
 
-    useEffect(() => {
-        const fetchEvents = async () => {
-            try {
-                const response = await API.get('events/');
-                setEvents(response.data);
-            } catch (error) {
-                console.error('Error fetching events:', error);
-            }
-        };
+const token = localStorage.getItem("access_token");
 
-        fetchEvents();
-    }, []);
+let currentUserId = null;
+
+if (token) {
+    try {
+        const decodedToken = jwtDecode(token);
+        currentUserId = decodedToken.user_id;
+    } catch (error) {
+        console.error("Invalid token");
+    }
+}
+
+    useEffect(() => {
+    const fetchEvents = async () => {
+        try {
+            const response = await API.get('events/');
+            setEvents(response.data);
+        } catch (error) {
+            console.error('Error fetching events:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fetchEvents();
+}, []);
 
     const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,6 +79,33 @@ const handleCreateEvent = async (e) => {
         console.error('Event creation error:', error);
         console.log(error.response?.data);
         alert('Failed to create event.');
+    }
+};
+
+const handleDeleteEvent = async (eventId) => {
+    const confirmDelete = window.confirm(
+        'Are you sure you want to delete this event?'
+    );
+
+    if (!confirmDelete) {
+        return;
+    }
+
+    try {
+        setDeletingId(eventId);
+
+        await API.delete(`events/${eventId}/`);
+
+        setEvents(
+            events.filter((event) => event.id !== eventId)
+        );
+
+        alert('Event deleted successfully!');
+    } catch (error) {
+        console.error('Delete event error:', error);
+        alert('Failed to delete event.');
+    } finally {
+        setDeletingId(null);
     }
 };
 
@@ -151,42 +196,59 @@ const handleCreateEvent = async (e) => {
 
                 <div className="events-grid">
 
-                    {events.length === 0 ? (
-                        <div className="empty-events">
-                            <h3>No events yet</h3>
-                            <p>Be the first to create a campus event!</p>
-                        </div>
-                    ) : (
-                        events.map((event) => (
-                            <div className="event-card" key={event.id}>
+    {loading ? (
+        <div className="loading-events">
+            <div className="loader"></div>
+            <p>Loading events...</p>
+        </div>
+    ) : events.length === 0 ? (
+        <div className="empty-events">
+            <h3>No events yet</h3>
+            <p>Be the first to create a campus event!</p>
+        </div>
+    ) : (
+        events.map((event) => (
+            <div className="event-card" key={event.id}>
 
-                                <span className="event-category">
-                                    {event.category}
-                                </span>
+                <span className="event-category">
+                    {event.category}
+                </span>
 
-                                <h3>{event.title}</h3>
+                <h3>{event.title}</h3>
 
-                                <p>{event.description}</p>
+                <p>{event.description}</p>
 
-                                <p>
-                                    📍 {event.venue}
-                                </p>
+                <p>📍 {event.venue}</p>
 
-                                <p>
-                                    📅 {new Date(
-                                        event.event_date
-                                    ).toLocaleString()}
-                                </p>
+                <p>
+                    📅 {new Date(
+                        event.event_date
+                    ).toLocaleString()}
+                </p>
 
-                                <p>
-                                    👤 Organized by: {event.organizer_name}
-                                </p>
+                <p>
+                    👤 Organized by: {event.organizer_name}
+                </p>
 
-                            </div>
-                        ))
-                    )}
+                {String(event.organizer_id) === String(currentUserId) && (
+                    <button
+                        className="delete-event-btn"
+                        onClick={() =>
+                            handleDeleteEvent(event.id)
+                        }
+                        disabled={deletingId === event.id}
+                    >
+                        {deletingId === event.id
+                            ? 'Deleting...'
+                            : '🗑 Delete Event'}
+                    </button>
+                )}
 
-                </div>
+            </div>
+        ))
+    )}
+
+</div>
 
             </div>
         </div>
