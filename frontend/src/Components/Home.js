@@ -1,85 +1,189 @@
-import Navbar from './Navbar';
-import './Home.css';
+import React from "react";
+import Navbar from "./Navbar";
+import {
+  BookOpen,
+  CalendarDays,
+  Search,
+  Users,
+  ArrowRight,
+  Sparkles,
+  GraduationCap,
+} from "lucide-react";
+import "./Home.css";
 
 function Home({ onNavigate }) {
-    return (
-        <div className="home-page">
-            <Navbar onNavigate={onNavigate} />
+  return (
+    <div className="home-page">
+      <Navbar onNavigate={onNavigate} />
 
-            <main className="home-content">
-                <section className="hero-section">
-                    <div>
-                        <p className="welcome-text">WELCOME TO CAMPUSLY</p>
+      <main className="home-content">
 
-                        <h1>
-                            Your Campus.
-                            <br />
-                            Your Community.
-                        </h1>
+        {/* Hero Section */}
+        <section className="hero-section">
 
-                        <p className="hero-description">
-                            Everything you need for college life in one place.
-                            Find resources, discover events, and connect with
-                            your campus community.
-                        </p>
+          <div className="hero-background-shape shape-one"></div>
+          <div className="hero-background-shape shape-two"></div>
 
-                        <button className="nav-btn" onClick={() => onNavigate('resources')}>
-                    Resources
-                </button>
-                    </div>
+          <div className="hero-left">
 
-                    <div className="hero-card">
-                        <span>🎓</span>
-                        <h3>CampusConnect</h3>
-                        <p>
-                            Learn, share and connect with students across your
-                            college.
-                        </p>
-                    </div>
-                </section>
+            <div className="welcome-badge">
+              <Sparkles size={16} />
+              <span>YOUR CAMPUS, CONNECTED</span>
+            </div>
 
-                <section className="features-section">
-                    <h2>Explore Campusly</h2>
+            <h1>
+              Everything you need
+              <span> for campus life.</span>
+            </h1>
 
-                    <div className="feature-grid">
-                        <div className="feature-card">
-                            <span>📚</span>
-                            <h3>Resources</h3>
-                            <p>
-                                Access notes, PYQs, assignments and study
-                                material.
-                            </p>
-                        </div>
+            <p className="hero-description">
+              Discover academic resources, stay updated with campus events,
+              and connect with students — all in one place.
+            </p>
 
-                        <div className="feature-card">
-                            <span>📅</span>
-                            <h3>Events</h3>
-                            <p>
-                                Discover upcoming college events and activities.
-                            </p>
-                        </div>
+            <button
+              className="primary-btn"
+              onClick={() => onNavigate("resources")}
+            >
+              Explore Resources
+              <ArrowRight size={18} />
+            </button>
 
-                        <div className="feature-card">
-                            <span>🔎</span>
-                            <h3>Lost & Found</h3>
-                            <p>
-                                Report lost items or help others find their
-                                belongings.
-                            </p>
-                        </div>
+          </div>
 
-                        <div className="feature-card">
-                            <span>🤝</span>
-                            <h3>Community</h3>
-                            <p>
-                                Connect and collaborate with students on campus.
-                            </p>
-                        </div>
-                    </div>
-                </section>
-            </main>
-        </div>
-    );
+          <div className="hero-right">
+
+            <div className="hero-card">
+
+              <div className="hero-card-icon">
+                <GraduationCap size={34} />
+              </div>
+
+              <div className="hero-card-content">
+                <span className="hero-card-label">
+                  CAMPUSLY
+                </span>
+
+                <h3>
+                  Learn.
+                  <br />
+                  Connect.
+                  <br />
+                  Grow.
+                </h3>
+
+                <p>
+                  A smarter way to experience your college journey.
+                </p>
+              </div>
+
+              <div className="hero-card-glow"></div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        {/* Features */}
+        <section className="features-section">
+
+          <div className="section-heading">
+            <span>EXPLORE CAMPUSLY</span>
+            <h2>Everything in one place.</h2>
+          </div>
+
+          <div className="feature-grid">
+
+            <div
+              className="feature-card"
+              onClick={() => onNavigate("resources")}
+            >
+              <div className="feature-icon">
+                <BookOpen size={24} />
+              </div>
+
+              <h3>Resources</h3>
+
+              <p>
+                Access notes, previous year questions, assignments,
+                books and study material shared by students.
+              </p>
+
+              <div className="feature-arrow">
+                <ArrowRight size={18} />
+              </div>
+            </div>
+
+
+            <div
+              className="feature-card"
+              onClick={() => onNavigate("events")}
+            >
+              <div className="feature-icon">
+                <CalendarDays size={24} />
+              </div>
+
+              <h3>Events</h3>
+
+              <p>
+                Discover upcoming college events, workshops,
+                competitions and student activities.
+              </p>
+
+              <div className="feature-arrow">
+                <ArrowRight size={18} />
+              </div>
+            </div>
+
+
+            <div className="feature-card">
+
+              <div className="feature-icon">
+                <Search size={24} />
+              </div>
+
+              <h3>Discover</h3>
+
+              <p>
+                Quickly find the resources and information
+                you need across your campus.
+              </p>
+
+              <div className="feature-arrow">
+                <ArrowRight size={18} />
+              </div>
+
+            </div>
+
+
+            <div className="feature-card">
+
+              <div className="feature-icon">
+                <Users size={24} />
+              </div>
+
+              <h3>Community</h3>
+
+              <p>
+                Share useful resources and connect with
+                fellow students in your campus community.
+              </p>
+
+              <div className="feature-arrow">
+                <ArrowRight size={18} />
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </main>
+    </div>
+  );
 }
 
 export default Home;
