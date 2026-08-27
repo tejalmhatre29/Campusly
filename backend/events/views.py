@@ -12,3 +12,12 @@ class EventListCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(organizer=self.request.user)
+
+
+class EventDeleteView(generics.DestroyAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Event.objects.filter(organizer=self.request.user)
