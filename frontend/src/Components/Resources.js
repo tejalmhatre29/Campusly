@@ -9,6 +9,8 @@ function Resources({ onNavigate }) {
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all");
 
   const token = localStorage.getItem("access_token");
 
@@ -123,6 +125,21 @@ function Resources({ onNavigate }) {
     }
   };
 
+const filteredResources = resources.filter((resource) => {
+    const search = searchTerm.toLowerCase();
+
+    const matchesSearch =
+        resource.title.toLowerCase().includes(search) ||
+        resource.subject.toLowerCase().includes(search) ||
+        resource.description.toLowerCase().includes(search);
+
+    const matchesCategory =
+        categoryFilter === "all" ||
+        resource.category === categoryFilter;
+
+    return matchesSearch && matchesCategory;
+});
+
   return (
     <div className="resources-page">
       <Navbar onNavigate={onNavigate} />
@@ -188,6 +205,59 @@ function Resources({ onNavigate }) {
           </div>
         )}
 
+        <div className="resource-search">
+    <input
+        type="text"
+        placeholder="🔍 Search resources by title, subject or description..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+    />
+</div>
+
+<div className="resource-filters">
+    <button
+        className={categoryFilter === "all" ? "active" : ""}
+        onClick={() => setCategoryFilter("all")}
+    >
+        All
+    </button>
+
+    <button
+        className={categoryFilter === "notes" ? "active" : ""}
+        onClick={() => setCategoryFilter("notes")}
+    >
+        📚 Notes
+    </button>
+
+    <button
+        className={categoryFilter === "pyq" ? "active" : ""}
+        onClick={() => setCategoryFilter("pyq")}
+    >
+        📄 PYQ
+    </button>
+
+    <button
+        className={categoryFilter === "book" ? "active" : ""}
+        onClick={() => setCategoryFilter("book")}
+    >
+        📖 Books
+    </button>
+
+    <button
+        className={categoryFilter === "assignment" ? "active" : ""}
+        onClick={() => setCategoryFilter("assignment")}
+    >
+        📝 Assignments
+    </button>
+
+    <button
+        className={categoryFilter === "other" ? "active" : ""}
+        onClick={() => setCategoryFilter("other")}
+    >
+        📁 Other
+    </button>
+</div>
+
         {/* Resources */}
         <div className="resource-grid">
           {loading ? (
@@ -195,13 +265,13 @@ function Resources({ onNavigate }) {
               <div className="loader"></div>
               <p>Loading resources...</p>
             </div>
-          ) : resources.length === 0 ? (
+          ) : filteredResources.length === 0 ? (
             <div className="empty-resources">
               <h3>No resources yet</h3>
               <p>Be the first student to upload a resource!</p>
             </div>
           ) : (
-            resources.map((resource) => (
+            filteredResources.map((resource) => (
               <div className="resource-card" key={resource.id}>
                 <span className="resource-category">{resource.category}</span>
 

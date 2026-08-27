@@ -29,3 +29,24 @@ class Resource(models.Model):
 
     def __str__(self):
         return self.title
+
+class ResourceBookmark(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='resource_bookmarks'
+    )
+
+    resource = models.ForeignKey(
+        Resource,
+        on_delete=models.CASCADE,
+        related_name='bookmarks'
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'resource')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.resource.title}"
