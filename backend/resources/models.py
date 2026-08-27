@@ -50,3 +50,24 @@ class ResourceBookmark(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.resource.title}"
+
+class ResourceLike(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='resource_likes'
+    )
+
+    resource = models.ForeignKey(
+        Resource,
+        on_delete=models.CASCADE,
+        related_name='likes'
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'resource')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.resource.title}"

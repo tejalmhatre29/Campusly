@@ -261,3 +261,45 @@
     color: white;
     border-color: #6366f1;
 }
+
+.bookmark-btn {
+    margin-top: 12px;
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 9px;
+    background: white;
+    color: #555;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.bookmark-btn:hover {
+    border-color: #f59e0b;
+    color: #d97706;
+}
+
+.like-btn {
+    margin-top: 12px;
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 9px;
+    background: white;
+    color: #555;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.like-btn:hover {
+    border-color: #16a34a;
+    color: #16a34a;
+}
+
+.like-btn span {
+    margin-left: 6px;
+}

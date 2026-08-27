@@ -11,6 +11,9 @@ function Resources({ onNavigate }) {
   const [deletingId, setDeletingId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
+  const [bookmarkedResources, setBookmarkedResources] = useState([]);
+  const [likedResources, setLikedResources] = useState([]);
+const [likeCounts, setLikeCounts] = useState({});
 
   const token = localStorage.getItem("access_token");
 
@@ -31,21 +34,56 @@ function Resources({ onNavigate }) {
     description: "",
     file: null,
   });
+useEffect(() => {
+  const fetchResources = async () => {
+    try {
+      // Fetch resources
+      const response = await API.get("resources/");
+      setResources(response.data);
 
-  useEffect(() => {
-    const fetchResources = async () => {
-      try {
-        const response = await API.get("resources/");
-        setResources(response.data);
-      } catch (error) {
-        console.error("Error fetching resources:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+      // Fetch bookmarks
+      const bookmarkResponse = await API.get(
+        "resources/bookmarks/"
+      );
 
-    fetchResources();
-  }, []);
+      const bookmarkIds = bookmarkResponse.data.map(
+        (bookmark) => bookmark.resource
+      );
+
+      setBookmarkedResources(bookmarkIds);
+
+      // Fetch likes
+      const likeResponse = await API.get(
+        "resources/likes/"
+      );
+
+      const likedIds = likeResponse.data.map(
+        (like) => like.resource
+      );
+
+      setLikedResources(likedIds);
+
+      // Set like counts
+      const counts = {};
+
+      response.data.forEach((resource) => {
+        counts[resource.id] = resource.like_count || 0;
+      });
+
+      setLikeCounts(counts);
+
+    } catch (error) {
+      console.error(
+        "Error fetching resources:",
+        error
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchResources();
+}, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -125,20 +163,84 @@ function Resources({ onNavigate }) {
     }
   };
 
-const filteredResources = resources.filter((resource) => {
+  const filteredResources = resources.filter((resource) => {
     const search = searchTerm.toLowerCase();
 
     const matchesSearch =
-        resource.title.toLowerCase().includes(search) ||
-        resource.subject.toLowerCase().includes(search) ||
-        resource.description.toLowerCase().includes(search);
+      resource.title.toLowerCase().includes(search) ||
+      resource.subject.toLowerCase().includes(search) ||
+      resource.description.toLowerCase().includes(search);
 
     const matchesCategory =
-        categoryFilter === "all" ||
-        resource.category === categoryFilter;
+      categoryFilter === "all" || resource.category === categoryFilter;
 
     return matchesSearch && matchesCategory;
-});
+  });
+
+  const toggleBookmark = async (resourceId) => {
+    const isBookmarked = bookmarkedResources.includes(resourceId);
+
+    try {
+      if (isBookmarked) {
+        await API.delete(`resources/bookmark/${resourceId}/`);
+
+        setBookmarkedResources(
+          bookmarkedResources.filter((id) => id !== resourceId),
+        );
+      } else {
+        await API.post("resources/bookmark/", {
+          resource: resourceId,
+        });
+
+        setBookmarkedResources([...bookmarkedResources, resourceId]);
+      }
+    } catch (error) {
+      console.error("Bookmark error:", error);
+      alert("Failed to update bookmark.");
+    }
+  };
+
+  const toggleLike = async (resourceId) => {
+    const isLiked = likedResources.includes(resourceId);
+
+    try {
+        if (isLiked) {
+            await API.delete(`resources/like/${resourceId}/`);
+
+            setLikedResources(
+                likedResources.filter(
+                    (id) => id !== resourceId
+                )
+            );
+
+            setLikeCounts({
+                ...likeCounts,
+                [resourceId]: Math.max(
+                    0,
+                    (likeCounts[resourceId] || 0) - 1
+                ),
+            });
+        } else {
+            await API.post("resources/like/", {
+                resource: resourceId,
+            });
+
+            setLikedResources([
+                ...likedResources,
+                resourceId,
+            ]);
+
+            setLikeCounts({
+                ...likeCounts,
+                [resourceId]:
+                    (likeCounts[resourceId] || 0) + 1,
+            });
+        }
+    } catch (error) {
+        console.error("Like error:", error);
+        alert("Failed to update like.");
+    }
+};
 
   return (
     <div className="resources-page">
@@ -206,57 +308,57 @@ const filteredResources = resources.filter((resource) => {
         )}
 
         <div className="resource-search">
-    <input
-        type="text"
-        placeholder="🔍 Search resources by title, subject or description..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-    />
-</div>
+          <input
+            type="text"
+            placeholder="🔍 Search resources by title, subject or description..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
 
-<div className="resource-filters">
-    <button
-        className={categoryFilter === "all" ? "active" : ""}
-        onClick={() => setCategoryFilter("all")}
-    >
-        All
-    </button>
+        <div className="resource-filters">
+          <button
+            className={categoryFilter === "all" ? "active" : ""}
+            onClick={() => setCategoryFilter("all")}
+          >
+            All
+          </button>
 
-    <button
-        className={categoryFilter === "notes" ? "active" : ""}
-        onClick={() => setCategoryFilter("notes")}
-    >
-        📚 Notes
-    </button>
+          <button
+            className={categoryFilter === "notes" ? "active" : ""}
+            onClick={() => setCategoryFilter("notes")}
+          >
+            📚 Notes
+          </button>
 
-    <button
-        className={categoryFilter === "pyq" ? "active" : ""}
-        onClick={() => setCategoryFilter("pyq")}
-    >
-        📄 PYQ
-    </button>
+          <button
+            className={categoryFilter === "pyq" ? "active" : ""}
+            onClick={() => setCategoryFilter("pyq")}
+          >
+            📄 PYQ
+          </button>
 
-    <button
-        className={categoryFilter === "book" ? "active" : ""}
-        onClick={() => setCategoryFilter("book")}
-    >
-        📖 Books
-    </button>
+          <button
+            className={categoryFilter === "book" ? "active" : ""}
+            onClick={() => setCategoryFilter("book")}
+          >
+            📖 Books
+          </button>
 
-    <button
-        className={categoryFilter === "assignment" ? "active" : ""}
-        onClick={() => setCategoryFilter("assignment")}
-    >
-        📝 Assignments
-    </button>
+          <button
+            className={categoryFilter === "assignment" ? "active" : ""}
+            onClick={() => setCategoryFilter("assignment")}
+          >
+            📝 Assignments
+          </button>
 
-    <button
-        className={categoryFilter === "other" ? "active" : ""}
-        onClick={() => setCategoryFilter("other")}
-    >
-        📁 Other
-    </button>
-</div>
+          <button
+            className={categoryFilter === "other" ? "active" : ""}
+            onClick={() => setCategoryFilter("other")}
+          >
+            📁 Other
+          </button>
+        </div>
 
         {/* Resources */}
         <div className="resource-grid">
@@ -288,6 +390,28 @@ const filteredResources = resources.filter((resource) => {
 
                 <p className="resource-contact">📞 {resource.uploader_phone}</p>
 
+                <button
+                  className="bookmark-btn"
+                  onClick={() => toggleBookmark(resource.id)}
+                >
+                  {bookmarkedResources.includes(resource.id)
+                    ? "⭐ Saved"
+                    : "☆ Save"}
+                </button>
+
+                <button
+    className="like-btn"
+    onClick={() => toggleLike(resource.id)}
+>
+    {likedResources.includes(resource.id)
+        ? "👍 Helpful"
+        : "👍 Helpful"}
+    
+    <span>
+        {likeCounts[resource.id] || 0}
+    </span>
+</button>
+
                 <a
                   href={`http://127.0.0.1:8000${resource.file}`}
                   target="_blank"
@@ -297,16 +421,16 @@ const filteredResources = resources.filter((resource) => {
                 </a>
 
                 {String(resource.uploaded_by_id) === String(currentUserId) && (
-    <button
-        className="delete-resource-btn"
-        onClick={() => handleDeleteResource(resource.id)}
-        disabled={deletingId === resource.id}
-    >
-        {deletingId === resource.id
-            ? "Deleting..."
-            : "🗑 Delete Resource"}
-    </button>
-)}
+                  <button
+                    className="delete-resource-btn"
+                    onClick={() => handleDeleteResource(resource.id)}
+                    disabled={deletingId === resource.id}
+                  >
+                    {deletingId === resource.id
+                      ? "Deleting..."
+                      : "🗑 Delete Resource"}
+                  </button>
+                )}
               </div>
             ))
           )}
