@@ -189,3 +189,26 @@
         transform: rotate(360deg);
     }
 }
+
+.delete-resource-btn {
+    margin-top: 12px;
+    width: 100%;
+    padding: 10px 14px;
+    border: none;
+    border-radius: 9px;
+    background: #fee2e2;
+    color: #dc2626;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.delete-resource-btn:hover {
+    background: #fecaca;
+}
+
+.delete-resource-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

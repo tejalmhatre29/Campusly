@@ -1,12 +1,27 @@
 import { useEffect, useState } from "react";
 import API from "../api";
 import Navbar from "./Navbar";
+import { jwtDecode } from "jwt-decode";
 import "./Resources.css";
 
 function Resources({ onNavigate }) {
   const [resources, setResources] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState(null);
+
+  const token = localStorage.getItem("access_token");
+
+  let currentUserId = null;
+
+  if (token) {
+    try {
+      const decodedToken = jwtDecode(token);
+      currentUserId = decodedToken.user_id;
+    } catch (error) {
+      console.error("Invalid token");
+    }
+  }
   const [formData, setFormData] = useState({
     title: "",
     subject: "",
@@ -15,20 +30,20 @@ function Resources({ onNavigate }) {
     file: null,
   });
 
-useEffect(() => {
+  useEffect(() => {
     const fetchResources = async () => {
-        try {
-            const response = await API.get('resources/');
-            setResources(response.data);
-        } catch (error) {
-            console.error('Error fetching resources:', error);
-        } finally {
-            setLoading(false);
-        }
+      try {
+        const response = await API.get("resources/");
+        setResources(response.data);
+      } catch (error) {
+        console.error("Error fetching resources:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchResources();
-}, []);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -56,11 +71,11 @@ useEffect(() => {
         data.append("file", formData.file);
       }
 
-      await API.post('resources/', data, {
-    headers: {
-        'Content-Type': 'multipart/form-data'
-    }
-});
+      await API.post("resources/", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       alert("Resource uploaded successfully!");
 
@@ -74,13 +89,38 @@ useEffect(() => {
         file: null,
       });
 
-      const response = await API.get('resources/');
-setResources(response.data);
+      const response = await API.get("resources/");
+      setResources(response.data);
     } catch (error) {
-    console.error('Upload error:', error);
-    console.log('Server response:', error.response?.data);
-    alert(JSON.stringify(error.response?.data));
-}
+      console.error("Upload error:", error);
+      console.log("Server response:", error.response?.data);
+      alert(JSON.stringify(error.response?.data));
+    }
+  };
+
+  const handleDeleteResource = async (resourceId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this resource?",
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    try {
+      setDeletingId(resourceId);
+
+      await API.delete(`resources/${resourceId}/`);
+
+      setResources(resources.filter((resource) => resource.id !== resourceId));
+
+      alert("Resource deleted successfully!");
+    } catch (error) {
+      console.error("Delete resource error:", error);
+      alert("Failed to delete resource.");
+    } finally {
+      setDeletingId(null);
+    }
   };
 
   return (
@@ -126,18 +166,14 @@ setResources(response.data);
                 onChange={handleChange}
                 required
               />
-              <select
-    name="category"
-    onChange={handleChange}
-    required
->
-    <option value="">Select category</option>
-    <option value="notes">Notes</option>
-    <option value="pyq">Previous Year Questions</option>
-    <option value="book">Books</option>
-    <option value="assignment">Assignments</option>
-    <option value="other">Other</option>
-</select>
+              <select name="category" onChange={handleChange} required>
+                <option value="">Select category</option>
+                <option value="notes">Notes</option>
+                <option value="pyq">Previous Year Questions</option>
+                <option value="book">Books</option>
+                <option value="assignment">Assignments</option>
+                <option value="other">Other</option>
+              </select>
 
               <textarea
                 name="description"
@@ -155,16 +191,16 @@ setResources(response.data);
         {/* Resources */}
         <div className="resource-grid">
           {loading ? (
-    <div className="loading-resources">
-        <div className="loader"></div>
-        <p>Loading resources...</p>
-    </div>
-) : resources.length === 0 ? (
-    <div className="empty-resources">
-        <h3>No resources yet</h3>
-        <p>Be the first student to upload a resource!</p>
-    </div>
-) : (
+            <div className="loading-resources">
+              <div className="loader"></div>
+              <p>Loading resources...</p>
+            </div>
+          ) : resources.length === 0 ? (
+            <div className="empty-resources">
+              <h3>No resources yet</h3>
+              <p>Be the first student to upload a resource!</p>
+            </div>
+          ) : (
             resources.map((resource) => (
               <div className="resource-card" key={resource.id}>
                 <span className="resource-category">{resource.category}</span>
@@ -189,6 +225,18 @@ setResources(response.data);
                 >
                   View / Download
                 </a>
+
+                {String(resource.uploaded_by_id) === String(currentUserId) && (
+    <button
+        className="delete-resource-btn"
+        onClick={() => handleDeleteResource(resource.id)}
+        disabled={deletingId === resource.id}
+    >
+        {deletingId === resource.id
+            ? "Deleting..."
+            : "🗑 Delete Resource"}
+    </button>
+)}
               </div>
             ))
           )}
