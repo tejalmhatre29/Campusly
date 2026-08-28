@@ -16,6 +16,7 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/resources/', include('resources.urls')),
     path('api/events/', include('events.urls')),
+    path( "api/lostfound/", include("lostfound.urls") ),
 ]
 
 
