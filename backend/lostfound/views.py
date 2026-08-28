@@ -1,4 +1,5 @@
 from rest_framework import generics, permissions
+from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -107,9 +108,10 @@ class LostFoundCommentListCreateView(generics.ListCreateAPIView):
 
         item_id = self.kwargs["item_id"]
 
-        item = LostFoundItem.objects.get(
-            id=item_id
-        )
+        item = get_object_or_404(
+    LostFoundItem,
+    id=item_id
+)
 
         serializer.save(
             item=item,

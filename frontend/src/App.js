@@ -4,6 +4,8 @@ import Register from './Components/Register';
 import Home from './Components/Home';
 import Resources from './Components/Resources';
 import Events from './Components/Events';
+import LostFound from './Components/LostFound';
+
 import './App.css';
 
 function App() {
@@ -47,6 +49,14 @@ function App() {
 if (currentPage === 'events') {
     return (
         <Events
+            onNavigate={(page) => setCurrentPage(page)}
+        />
+    );
+}
+
+if (currentPage === 'lostfound') {
+    return (
+        <LostFound
             onNavigate={(page) => setCurrentPage(page)}
         />
     );
