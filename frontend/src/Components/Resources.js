@@ -1,8 +1,23 @@
 import { useEffect, useState } from "react";
 import API from "../api";
 import Navbar from "./Navbar";
-import { jwtDecode } from "jwt-decode";
 import "./Resources.css";
+import { jwtDecode } from "jwt-decode";
+import {
+  BookOpen,
+  FileText,
+  BookMarked,
+  ClipboardList,
+  Folder,
+  User,
+  Phone,
+  Bookmark,
+  ThumbsUp,
+  Trash2,
+  Download,
+  Plus,
+  Search
+} from "lucide-react";
 
 function Resources({ onNavigate }) {
   const [resources, setResources] = useState([]);
@@ -250,18 +265,22 @@ useEffect(() => {
         {/* Header */}
         <div className="resources-header">
           <div>
-            <h1>📚 Campus Resources</h1>
+            <h1>
+  <BookOpen size={32} />
+  Campus Resources
+</h1>
             <p>
               Notes, PYQs, assignments and study material shared by students.
             </p>
           </div>
 
           <button
-            className="add-resource-btn"
-            onClick={() => setShowForm(!showForm)}
-          >
-            + Add Resource
-          </button>
+  className="add-resource-btn"
+  onClick={() => setShowForm(!showForm)}
+>
+  <Plus size={18} />
+  Add Resource
+</button>
         </div>
 
         {/* Add Resource Form */}
@@ -307,58 +326,68 @@ useEffect(() => {
           </div>
         )}
 
-        <div className="resource-search">
-          <input
-            type="text"
-            placeholder="🔍 Search resources by title, subject or description..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
+        <div className="search-box">
+  <Search size={19} />
+
+  <input
+    type="text"
+    placeholder="Search resources by title, subject or description..."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+  />
+</div>
 
         <div className="resource-filters">
-          <button
-            className={categoryFilter === "all" ? "active" : ""}
-            onClick={() => setCategoryFilter("all")}
-          >
-            All
-          </button>
 
-          <button
-            className={categoryFilter === "notes" ? "active" : ""}
-            onClick={() => setCategoryFilter("notes")}
-          >
-            📚 Notes
-          </button>
+  <button
+    className={categoryFilter === "all" ? "active" : ""}
+    onClick={() => setCategoryFilter("all")}
+  >
+    <Folder size={16} />
+    All
+  </button>
 
-          <button
-            className={categoryFilter === "pyq" ? "active" : ""}
-            onClick={() => setCategoryFilter("pyq")}
-          >
-            📄 PYQ
-          </button>
+  <button
+    className={categoryFilter === "notes" ? "active" : ""}
+    onClick={() => setCategoryFilter("notes")}
+  >
+    <BookOpen size={16} />
+    Notes
+  </button>
 
-          <button
-            className={categoryFilter === "book" ? "active" : ""}
-            onClick={() => setCategoryFilter("book")}
-          >
-            📖 Books
-          </button>
+  <button
+    className={categoryFilter === "pyq" ? "active" : ""}
+    onClick={() => setCategoryFilter("pyq")}
+  >
+    <FileText size={16} />
+    PYQ
+  </button>
 
-          <button
-            className={categoryFilter === "assignment" ? "active" : ""}
-            onClick={() => setCategoryFilter("assignment")}
-          >
-            📝 Assignments
-          </button>
+  <button
+    className={categoryFilter === "book" ? "active" : ""}
+    onClick={() => setCategoryFilter("book")}
+  >
+    <BookMarked size={16} />
+    Books
+  </button>
 
-          <button
-            className={categoryFilter === "other" ? "active" : ""}
-            onClick={() => setCategoryFilter("other")}
-          >
-            📁 Other
-          </button>
-        </div>
+  <button
+    className={categoryFilter === "assignment" ? "active" : ""}
+    onClick={() => setCategoryFilter("assignment")}
+  >
+    <ClipboardList size={16} />
+    Assignments
+  </button>
+
+  <button
+    className={categoryFilter === "other" ? "active" : ""}
+    onClick={() => setCategoryFilter("other")}
+  >
+    <Folder size={16} />
+    Other
+  </button>
+
+</div>
 
         {/* Resources */}
         <div className="resource-grid">
@@ -386,39 +415,61 @@ useEffect(() => {
                 <p className="resource-uploader">
                   Uploaded by: {resource.uploaded_by}
                 </p>
-                <p className="resource-contact">👤 {resource.uploader_name}</p>
+                <p className="resource-contact">
+  <User size={15} />
+  {resource.uploader_name}
+</p>
 
-                <p className="resource-contact">📞 {resource.uploader_phone}</p>
-
-                <button
-                  className="bookmark-btn"
-                  onClick={() => toggleBookmark(resource.id)}
-                >
-                  {bookmarkedResources.includes(resource.id)
-                    ? "⭐ Saved"
-                    : "☆ Save"}
-                </button>
+<p className="resource-contact">
+  <Phone size={15} />
+  {resource.uploader_phone}
+</p>
 
                 <button
-    className="like-btn"
-    onClick={() => toggleLike(resource.id)}
+  className="bookmark-btn"
+  onClick={() => toggleBookmark(resource.id)}
 >
-    {likedResources.includes(resource.id)
-        ? "👍 Helpful"
-        : "👍 Helpful"}
-    
-    <span>
-        {likeCounts[resource.id] || 0}
-    </span>
+  <Bookmark
+    size={16}
+    fill={
+      bookmarkedResources.includes(resource.id)
+        ? "currentColor"
+        : "none"
+    }
+  />
+
+  {bookmarkedResources.includes(resource.id)
+    ? "Saved"
+    : "Save"}
 </button>
 
+                <button
+  className="like-btn"
+  onClick={() => toggleLike(resource.id)}
+>
+  <ThumbsUp
+    size={16}
+    fill={
+      likedResources.includes(resource.id)
+        ? "currentColor"
+        : "none"
+    }
+  />
+
+  Helpful
+
+  <span>
+    {likeCounts[resource.id] || 0}
+  </span>
+</button>
                 <a
-                  href={`http://127.0.0.1:8000${resource.file}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  View / Download
-                </a>
+  href={`http://127.0.0.1:8000${resource.file}`}
+  target="_blank"
+  rel="noreferrer"
+>
+  <Download size={16} />
+  View / Download
+</a>
 
                 {String(resource.uploaded_by_id) === String(currentUserId) && (
                   <button
@@ -426,9 +477,14 @@ useEffect(() => {
                     onClick={() => handleDeleteResource(resource.id)}
                     disabled={deletingId === resource.id}
                   >
-                    {deletingId === resource.id
-                      ? "Deleting..."
-                      : "🗑 Delete Resource"}
+                    {deletingId === resource.id ? (
+  "Deleting..."
+) : (
+  <>
+    <Trash2 size={16} />
+    Delete Resource
+  </>
+)}
                   </button>
                 )}
               </div>
