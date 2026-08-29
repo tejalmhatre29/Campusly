@@ -65,6 +65,10 @@ class LostFoundCommentSerializer(serializers.ModelSerializer):
 
     commenter_name = serializers.SerializerMethodField()
 
+    def get_commenter_name(self, obj):
+        name = f"{obj.user.first_name} {obj.user.last_name}".strip()
+        return name or obj.user.username
+
     class Meta:
         model = LostFoundComment
 
@@ -79,6 +83,8 @@ class LostFoundCommentSerializer(serializers.ModelSerializer):
         ]
 
         read_only_fields = [
+            "id",
+            "item",
             "user",
             "user_id",
             "commenter_name",

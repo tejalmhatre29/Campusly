@@ -4,15 +4,21 @@
 
 .lostfound-page {
     min-height: 100vh;
-    background: linear-gradient(135deg, #f5fbff 0%, #eef8ff 50%, #ffffff 100%);
+    background: linear-gradient(135deg, #f4fbff 0%, #ffffff 55%, #eef9ff 100%);
     color: #172033;
 }
+
+
+/* ================================
+   MAIN CONTENT
+================================ */
 
 .lostfound-content {
     max-width: 1200px;
     margin: auto;
-    padding: 50px 30px 70px;
+    padding: 55px 30px 80px;
 }
+
 
 /* ================================
    HEADER
@@ -22,147 +28,279 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 25px;
-    margin-bottom: 35px;
+    gap: 30px;
+    margin-bottom: 42px;
+    animation: fadeDown 0.7s ease;
+}
+
+.section-label {
+    display: inline-block;
+    color: #159bd7;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
 }
 
 .lostfound-header h1 {
-    font-size: 38px;
-    font-weight: 750;
-    margin: 0 0 8px;
-    color: #172033;
-    letter-spacing: -0.8px;
+    font-size: 46px;
+    line-height: 1.1;
+    margin: 0 0 14px;
+    color: #142033;
+    letter-spacing: -1px;
 }
 
 .lostfound-header p {
+    max-width: 620px;
     margin: 0;
     color: #687386;
-    font-size: 15px;
-    line-height: 1.6;
+    font-size: 16px;
+    line-height: 1.7;
 }
 
+
 /* ================================
-   ADD ITEM BUTTON
+   REPORT BUTTON
 ================================ */
 
 .add-lostfound-btn {
     display: flex;
     align-items: center;
-    gap: 8px;
-
-    padding: 13px 20px;
+    justify-content: center;
+    gap: 9px;
     border: none;
-    border-radius: 10px;
-
-    background: linear-gradient(135deg, #38bdf8, #0284c7);
+    padding: 13px 20px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #20aee8, #168fd0);
     color: white;
-
     font-size: 14px;
-    font-weight: 650;
+    font-weight: 700;
     cursor: pointer;
-
-    box-shadow: 0 8px 20px rgba(2, 132, 199, 0.22);
-
+    box-shadow: 0 8px 22px rgba(22, 143, 208, 0.22);
     transition: all 0.25s ease;
 }
 
 .add-lostfound-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 28px rgba(2, 132, 199, 0.3);
+    box-shadow: 0 13px 28px rgba(22, 143, 208, 0.3);
 }
 
 .add-lostfound-btn:active {
     transform: translateY(-1px);
 }
 
+
 /* ================================
    FORM CARD
 ================================ */
 
 .lostfound-form-card {
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid #dceffc;
-    border-radius: 18px;
-    padding: 30px;
-    margin-bottom: 35px;
-
-    box-shadow: 0 15px 40px rgba(14, 116, 144, 0.08);
-
-    animation: slideDown 0.35s ease;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid #dceff8;
+    border-radius: 20px;
+    padding: 32px;
+    margin-bottom: 45px;
+    box-shadow: 0 18px 50px rgba(20, 137, 190, 0.09);
+    animation: formAppear 0.45s ease;
 }
 
-.lostfound-form-card h2 {
-    margin: 0 0 22px;
-    font-size: 23px;
+.form-heading {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 28px;
+}
+
+.form-icon {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 13px;
+    background: #e8f7ff;
+    color: #159bd7;
+}
+
+.form-heading h2 {
+    margin: 0 0 6px;
+    font-size: 22px;
     color: #172033;
 }
+
+.form-heading p {
+    margin: 0;
+    color: #748094;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* ================================
+   FORM
+================================ */
 
 .lostfound-form {
-    display: grid;
-    gap: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.lostfound-form input,
-.lostfound-form textarea,
-.lostfound-form select {
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #344054;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
     width: 100%;
     box-sizing: border-box;
-
-    padding: 13px 15px;
-
-    border: 1px solid #d7e8f2;
+    padding: 13px 14px;
+    border: 1px solid #d7e7ef;
     border-radius: 10px;
-
     background: #fbfdff;
     color: #172033;
-
     font-family: inherit;
     font-size: 14px;
-
     outline: none;
-
     transition: all 0.2s ease;
 }
 
-.lostfound-form textarea {
-    min-height: 120px;
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #9aa7b5;
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+    border-color: #a8d8ee;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #27a9e0;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(39, 169, 224, 0.1);
+}
+
+.form-group textarea {
+    min-height: 110px;
     resize: vertical;
 }
 
-.lostfound-form input:focus,
-.lostfound-form textarea:focus,
-.lostfound-form select:focus {
-    border-color: #38bdf8;
-    background: white;
-    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.12);
-}
-
-.lostfound-form button {
-    width: fit-content;
-
-    padding: 12px 22px;
-
-    border: none;
-    border-radius: 9px;
-
-    background: #0284c7;
-    color: white;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition: all 0.2s ease;
-}
-
-.lostfound-form button:hover {
-    background: #0369a1;
-    transform: translateY(-2px);
-}
 
 /* ================================
-   ITEM GRID
+   FILE INPUT
+================================ */
+
+.file-input-wrapper {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 12px;
+    border: 1px dashed #a9d9ec;
+    border-radius: 10px;
+    background: #f5fbfe;
+    color: #159bd7;
+    transition: 0.2s ease;
+}
+
+.file-input-wrapper:hover {
+    background: #eefaff;
+    border-color: #159bd7;
+}
+
+.file-input-wrapper input {
+    border: none;
+    padding: 10px 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.file-input-wrapper input:focus {
+    box-shadow: none;
+}
+
+
+/* ================================
+   SUBMIT BUTTON
+================================ */
+
+.submit-lostfound-btn {
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+    padding: 13px 22px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #20aee8, #168fd0);
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 7px 20px rgba(22, 143, 208, 0.2);
+    transition: all 0.25s ease;
+}
+
+.submit-lostfound-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 11px 25px rgba(22, 143, 208, 0.28);
+}
+
+.submit-lostfound-btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+/* ================================
+   SECTION
+================================ */
+
+.lostfound-section {
+    animation: fadeUp 0.7s ease;
+}
+
+.section-title {
+    margin-bottom: 25px;
+}
+
+.section-title h2 {
+    margin: 0 0 6px;
+    font-size: 27px;
+    color: #172033;
+}
+
+.section-title p {
+    margin: 0;
+    color: #758196;
+    font-size: 14px;
+}
+
+
+/* ================================
+   GRID
 ================================ */
 
 .lostfound-grid {
@@ -171,953 +309,633 @@
     gap: 22px;
 }
 
+
 /* ================================
-   LOST & FOUND CARD
+   CARD
 ================================ */
 
 .lostfound-card {
-    position: relative;
-
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid #dceffc;
-    border-radius: 17px;
-
-    padding: 24px;
-
-    box-shadow: 0 8px 25px rgba(14, 116, 144, 0.06);
-
-    transition: all 0.3s ease;
-
     overflow: hidden;
-}
-
-.lostfound-card::before {
-    content: "";
-
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 4px;
-
-    background: linear-gradient(
-        90deg,
-        #38bdf8,
-        #0284c7
-    );
+    background: white;
+    border: 1px solid #deedf4;
+    border-radius: 18px;
+    box-shadow: 0 8px 28px rgba(20, 80, 110, 0.06);
+    transition: all 0.3s ease;
+    animation: cardAppear 0.5s ease both;
 }
 
 .lostfound-card:hover {
     transform: translateY(-7px);
-    border-color: #bae6fd;
-
-    box-shadow: 0 18px 40px rgba(14, 116, 144, 0.13);
+    border-color: #b8e1f2;
+    box-shadow: 0 18px 40px rgba(20, 137, 190, 0.13);
 }
 
+
 /* ================================
-   STATUS BADGE
+   CARD IMAGE
 ================================ */
 
-.lostfound-status {
+.item-image {
+    width: 100%;
+    height: 190px;
+    overflow: hidden;
+    background: #edf8fc;
+}
+
+.item-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.45s ease;
+}
+
+.lostfound-card:hover .item-image img {
+    transform: scale(1.05);
+}
+
+.item-image-placeholder {
+    width: 100%;
+    height: 190px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #eaf8ff, #f5fcff);
+    color: #7fc9e9;
+}
+
+
+/* ================================
+   CARD CONTENT
+================================ */
+
+.item-card-content {
+    padding: 21px;
+}
+
+.item-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+
+/* ================================
+   LOST / FOUND BADGES
+================================ */
+
+.item-type {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-
     padding: 6px 11px;
-
     border-radius: 20px;
-
-    background: #e0f2fe;
-    color: #0369a1;
-
     font-size: 11px;
-    font-weight: 700;
-
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-.lostfound-status.found {
-    background: #ecfeff;
-    color: #0891b2;
+.item-type.lost {
+    background: #fff1f1;
+    color: #dc4d4d;
 }
 
-.lostfound-status.lost {
-    background: #eff6ff;
-    color: #2563eb;
+.item-type.found {
+    background: #eaf9f2;
+    color: #169b61;
 }
+
 
 /* ================================
-   CARD TITLE
+   STATUS
 ================================ */
 
-.lostfound-card h3 {
-    margin: 17px 0 9px;
+.item-status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6d7888;
+}
 
+.item-status svg {
+    color: #20a870;
+}
+
+
+/* ================================
+   TITLE + DESCRIPTION
+================================ */
+
+.item-card-content h3 {
+    margin: 0 0 9px;
+    color: #172033;
     font-size: 20px;
     line-height: 1.3;
-
-    color: #172033;
 }
 
-.lostfound-description {
-    color: #687386;
-    font-size: 14px;
+.item-description {
+    min-height: 45px;
+    margin: 0 0 17px;
+    color: #6b7789;
+    font-size: 13px;
     line-height: 1.65;
 
-    margin-bottom: 18px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
+
 /* ================================
-   ITEM DETAILS
+   DETAILS
 ================================ */
 
-.lostfound-details {
+.item-details {
     display: flex;
     flex-direction: column;
     gap: 9px;
-
-    padding: 15px 0;
-
-    border-top: 1px solid #edf4f8;
-    border-bottom: 1px solid #edf4f8;
+    padding: 14px 0;
+    border-top: 1px solid #edf2f5;
+    border-bottom: 1px solid #edf2f5;
 }
 
-.lostfound-detail {
+.item-details span {
     display: flex;
     align-items: center;
-    gap: 9px;
-
-    color: #596579;
-    font-size: 13px;
-}
-
-.lostfound-detail svg {
-    color: #0284c7;
-    flex-shrink: 0;
-}
-
-/* ================================
-   POSTED BY
-================================ */
-
-.lostfound-uploader {
-    margin-top: 16px;
-
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    color: #687386;
-    font-size: 13px;
-}
-
-.lostfound-uploader svg {
-    color: #38bdf8;
-}
-
-/* ================================
-   COMMENTS SECTION
-================================ */
-
-.comments-section {
-    margin-top: 20px;
-    padding-top: 18px;
-
-    border-top: 1px solid #edf4f8;
-}
-
-.comments-title {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-
-    margin-bottom: 14px;
-
-    color: #172033;
-    font-size: 14px;
-    font-weight: 650;
-}
-
-.comments-title svg {
-    color: #0284c7;
-}
-
-/* Individual comment */
-
-.comment-item {
-    padding: 11px 13px;
-    margin-bottom: 9px;
-
-    background: #f7fcff;
-    border: 1px solid #e2f2fa;
-    border-radius: 10px;
-
-    animation: fadeIn 0.3s ease;
-}
-
-.comment-user {
-    font-size: 12px;
-    font-weight: 650;
-    color: #0369a1;
-
-    margin-bottom: 4px;
-}
-
-.comment-text {
-    color: #596579;
-    font-size: 13px;
-    line-height: 1.5;
-}
-
-/* ================================
-   COMMENT INPUT
-================================ */
-
-.comment-form {
-    display: flex;
     gap: 8px;
-    margin-top: 12px;
+    color: #697689;
+    font-size: 12px;
 }
 
-.comment-form input {
-    flex: 1;
-
-    padding: 10px 12px;
-
-    border: 1px solid #d7e8f2;
-    border-radius: 9px;
-
-    background: white;
-
-    font-size: 13px;
-    outline: none;
-
-    transition: 0.2s ease;
+.item-details svg {
+    flex-shrink: 0;
+    color: #2ba9dc;
 }
 
-.comment-form input:focus {
-    border-color: #38bdf8;
-    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+
+/* ================================
+   ACTIONS
+================================ */
+
+.item-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+    margin-top: 14px;
 }
 
-.comment-form button {
+.comment-btn,
+.resolve-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    width: 40px;
-    height: 40px;
-
-    border: none;
+    gap: 6px;
+    padding: 10px 9px;
     border-radius: 9px;
-
-    background: #0284c7;
-    color: white;
-
+    font-size: 12px;
+    font-weight: 700;
     cursor: pointer;
-
     transition: all 0.2s ease;
 }
 
-.comment-form button:hover {
-    background: #0369a1;
-    transform: translateY(-2px);
+.comment-btn {
+    border: 1px solid #dceaf1;
+    background: #f8fcfe;
+    color: #4e6474;
 }
+
+.comment-btn:hover {
+    border-color: #69c4e8;
+    background: #eefaff;
+    color: #159bd7;
+}
+
+.comment-btn span {
+    min-width: 19px;
+    height: 19px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #e4f5fc;
+    color: #159bd7;
+    font-size: 10px;
+}
+
+.resolve-btn {
+    border: 1px solid #cceede;
+    background: #f2fcf7;
+    color: #15915b;
+}
+
+.resolve-btn:hover {
+    background: #e4f8ee;
+    border-color: #91d9b5;
+}
+
 
 /* ================================
    DELETE BUTTON
 ================================ */
 
-.delete-lostfound-btn {
+.delete-item-btn {
     width: 100%;
-
-    margin-top: 15px;
-    padding: 10px 14px;
-
-    border: 1px solid #fee2e2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 9px;
+    padding: 10px;
+    border: 1px solid #f1dcdc;
     border-radius: 9px;
-
-    background: #fff7f7;
-    color: #dc2626;
-
-    font-size: 13px;
-    font-weight: 600;
-
+    background: #fff8f8;
+    color: #d05252;
+    font-size: 12px;
+    font-weight: 700;
     cursor: pointer;
-
     transition: all 0.2s ease;
 }
 
-.delete-lostfound-btn:hover {
-    background: #fee2e2;
-    border-color: #fecaca;
+.delete-item-btn:hover {
+    background: #fff0f0;
+    border-color: #edbebe;
+    color: #c93636;
 }
+
 
 /* ================================
    EMPTY STATE
 ================================ */
 
-.empty-lostfound {
-    grid-column: 1 / -1;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
+.no-items {
     min-height: 280px;
-
-    background: rgba(255, 255, 255, 0.9);
-
-    border: 1px dashed #bae6fd;
-    border-radius: 18px;
-
-    text-align: center;
-
-    padding: 40px;
-}
-
-.empty-lostfound-icon {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-
-    width: 65px;
-    height: 65px;
-
-    margin-bottom: 18px;
-
-    border-radius: 50%;
-
-    background: #e0f2fe;
-    color: #0284c7;
+    background: white;
+    border: 1px solid #deedf4;
+    border-radius: 18px;
+    color: #65b8da;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(20, 80, 110, 0.04);
 }
 
-.empty-lostfound h3 {
-    margin: 0 0 8px;
-
-    font-size: 20px;
-    color: #172033;
+.no-items h3 {
+    margin: 16px 0 7px;
+    color: #27364a;
+    font-size: 19px;
 }
 
-.empty-lostfound p {
+.no-items p {
     margin: 0;
-
-    max-width: 400px;
-
-    color: #687386;
+    color: #7a8797;
     font-size: 14px;
-    line-height: 1.6;
 }
+
 
 /* ================================
    LOADING
 ================================ */
 
-.loading-lostfound {
-    grid-column: 1 / -1;
-
-    min-height: 250px;
-
+.lostfound-loading {
+    min-height: 280px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
-    color: #687386;
-}
-
-.lostfound-loader {
-    width: 38px;
-    height: 38px;
-
-    border: 4px solid #dff3fc;
-    border-top-color: #0284c7;
-
-    border-radius: 50%;
-
-    animation: spin 0.8s linear infinite;
-
-    margin-bottom: 12px;
-}
-
-/* ================================
-   ANIMATIONS
-================================ */
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-12px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(5px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* ================================
-   RESPONSIVE
-================================ */
-
-@media (max-width: 950px) {
-    .lostfound-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .lostfound-header h1 {
-        font-size: 32px;
-    }
-}
-
-@media (max-width: 700px) {
-    .lostfound-content {
-        padding: 35px 20px 50px;
-    }
-
-    .lostfound-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .add-lostfound-btn {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .lostfound-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 450px) {
-    .lostfound-header h1 {
-        font-size: 28px;
-    }
-
-    .lostfound-form-card {
-        padding: 22px;
-    }
-
-    .lostfound-card {
-        padding: 20px;
-    }
-
-    .comment-form {
-        flex-direction: row;
-    }
-}
-
-/* =========================
-   LOST & FOUND PAGE
-========================= */
-
-.lostfound-page {
-    min-height: 100vh;
-    background: linear-gradient(135deg, #f4fbff 0%, #ffffff 55%, #eef9ff 100%);
-    padding-bottom: 60px;
-}
-
-.lostfound-content {
-    max-width: 1200px;
-    margin: auto;
-    padding: 50px 30px;
-}
-
-/* =========================
-   HEADER
-========================= */
-
-.lostfound-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 35px;
-}
-
-.lostfound-header h1 {
-    font-size: 36px;
-    color: #123047;
-    margin-bottom: 8px;
-}
-
-.lostfound-header p {
-    color: #6b8293;
-    font-size: 15px;
-}
-
-.create-post-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 13px 20px;
-    border: none;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #38bdf8, #0284c7);
-    color: white;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: 0 8px 20px rgba(2, 132, 199, 0.2);
-    transition: 0.25s ease;
-}
-
-.create-post-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 25px rgba(2, 132, 199, 0.28);
-}
-
-
-/* =========================
-   CREATE POST FORM
-========================= */
-
-.lostfound-form-card {
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid #dceff8;
+    background: white;
+    border: 1px solid #deedf4;
     border-radius: 18px;
-    padding: 30px;
-    margin-bottom: 35px;
-    box-shadow: 0 15px 40px rgba(14, 116, 144, 0.08);
-    animation: slideDown 0.35s ease;
-}
-
-.lostfound-form-card h2 {
-    color: #123047;
-    font-size: 23px;
-    margin-bottom: 22px;
-}
-
-.lostfound-form {
-    display: grid;
-    gap: 15px;
-}
-
-.lostfound-form input,
-.lostfound-form select,
-.lostfound-form textarea {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 13px 15px;
-    border: 1px solid #cfe5ef;
-    border-radius: 10px;
-    background: #fafdff;
-    color: #18384c;
-    font-size: 14px;
-    font-family: inherit;
-    outline: none;
-    transition: 0.2s ease;
-}
-
-.lostfound-form textarea {
-    min-height: 120px;
-    resize: vertical;
-}
-
-.lostfound-form input:focus,
-.lostfound-form select:focus,
-.lostfound-form textarea:focus {
-    border-color: #38bdf8;
-    background: white;
-    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.12);
-}
-
-.form-submit-btn {
-    width: fit-content;
-    padding: 12px 22px;
-    border: none;
-    border-radius: 10px;
-    background: #0284c7;
-    color: white;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s ease;
-}
-
-.form-submit-btn:hover {
-    background: #0369a1;
-    transform: translateY(-2px);
-}
-
-
-/* =========================
-   POSTS GRID
-========================= */
-
-.lostfound-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 22px;
-}
-
-
-/* =========================
-   CREATED POST CARD
-========================= */
-
-.lostfound-card {
-    position: relative;
-    background: white;
-    border: 1px solid #dceff8;
-    border-radius: 18px;
-    padding: 24px;
-    box-shadow: 0 10px 30px rgba(14, 116, 144, 0.07);
-    transition: all 0.3s ease;
-    overflow: hidden;
-    animation: fadeUp 0.45s ease;
-}
-
-.lostfound-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: linear-gradient(90deg, #38bdf8, #0284c7);
-}
-
-.lostfound-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 18px 40px rgba(14, 116, 144, 0.13);
-}
-
-
-/* =========================
-   LOST / FOUND BADGE
-========================= */
-
-.lostfound-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 11px;
-    border-radius: 20px;
-    background: #e0f7ff;
-    color: #0369a1;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.lostfound-status.lost {
-    background: #fff1f2;
-    color: #e11d48;
-}
-
-.lostfound-status.found {
-    background: #ecfeff;
-    color: #0891b2;
-}
-
-
-/* =========================
-   POST CONTENT
-========================= */
-
-.lostfound-card h3 {
-    margin: 16px 0 9px;
-    color: #123047;
-    font-size: 21px;
-}
-
-.lostfound-description {
-    color: #60798a;
-    font-size: 14px;
-    line-height: 1.65;
-    margin-bottom: 16px;
-}
-
-.lostfound-location,
-.lostfound-date {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #587383;
-    font-size: 13px;
-    margin-top: 8px;
-}
-
-.lostfound-location svg,
-.lostfound-date svg {
-    color: #0284c7;
-}
-
-
-/* =========================
-   POST IMAGE
-========================= */
-
-.lostfound-image {
-    width: 100%;
-    height: 210px;
-    object-fit: cover;
-    border-radius: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #dceff8;
-}
-
-
-/* =========================
-   POSTED BY
-========================= */
-
-.lostfound-uploader {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 20px;
-    padding-top: 16px;
-    border-top: 1px solid #e8f3f8;
-}
-
-.uploader-icon {
-    width: 34px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: #e0f7ff;
-    color: #0284c7;
-}
-
-.uploader-info {
-    display: flex;
-    flex-direction: column;
-}
-
-.uploader-name {
-    color: #23465a;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.uploader-contact {
-    color: #78909f;
-    font-size: 12px;
-}
-
-
-/* =========================
-   CARD ACTIONS
-========================= */
-
-.lostfound-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 18px;
-}
-
-.lostfound-action-btn {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    padding: 10px;
-    border: 1px solid #d8eaf2;
-    border-radius: 9px;
-    background: white;
-    color: #416477;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s ease;
-}
-
-.lostfound-action-btn:hover {
-    border-color: #38bdf8;
-    color: #0284c7;
-    background: #f0fbff;
-}
-
-.delete-lostfound-btn {
-    color: #dc2626;
-}
-
-.delete-lostfound-btn:hover {
-    border-color: #fecaca;
-    background: #fff5f5;
-    color: #dc2626;
-}
-
-
-/* =========================
-   COMMENTS SECTION
-========================= */
-
-.comments-section {
-    margin-top: 20px;
-    padding-top: 18px;
-    border-top: 1px solid #e6f1f6;
-}
-
-.comments-section h4 {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    color: #23465a;
-    font-size: 14px;
-    margin-bottom: 14px;
-}
-
-.comment {
-    padding: 11px 13px;
-    margin-bottom: 9px;
-    background: #f6fbfd;
-    border-radius: 10px;
-    border: 1px solid #e4f1f6;
-}
-
-.comment-user {
-    color: #0369a1;
-    font-size: 12px;
-    font-weight: 700;
-    margin-bottom: 4px;
-}
-
-.comment-text {
-    color: #587383;
-    font-size: 13px;
-    line-height: 1.5;
-}
-
-
-/* =========================
-   COMMENT INPUT
-========================= */
-
-.comment-form {
-    display: flex;
-    gap: 8px;
-    margin-top: 12px;
-}
-
-.comment-form input {
-    flex: 1;
-    min-width: 0;
-    padding: 10px 13px;
-    border: 1px solid #cfe5ef;
-    border-radius: 9px;
-    outline: none;
-    font-size: 13px;
-    transition: 0.2s ease;
-}
-
-.comment-form input:focus {
-    border-color: #38bdf8;
-    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
-}
-
-.comment-form button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 13px;
-    border: none;
-    border-radius: 9px;
-    background: #0284c7;
-    color: white;
-    cursor: pointer;
-    transition: 0.2s ease;
-}
-
-.comment-form button:hover {
-    background: #0369a1;
-    transform: translateY(-1px);
-}
-
-
-/* =========================
-   EMPTY STATE
-========================= */
-
-.empty-lostfound {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 70px 30px;
-    background: white;
-    border: 1px solid #dceff8;
-    border-radius: 18px;
-    box-shadow: 0 10px 30px rgba(14, 116, 144, 0.06);
-}
-
-.empty-lostfound svg {
-    color: #38bdf8;
-    margin-bottom: 15px;
-}
-
-.empty-lostfound h3 {
-    color: #23465a;
-    margin-bottom: 8px;
-}
-
-.empty-lostfound p {
-    color: #78909f;
-    font-size: 14px;
-}
-
-
-/* =========================
-   LOADING
-========================= */
-
-.loading-lostfound {
-    grid-column: 1 / -1;
-    min-height: 250px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #668394;
 }
 
 .lostfound-loader {
     width: 38px;
     height: 38px;
     border: 4px solid #dff3fb;
-    border-top-color: #0284c7;
+    border-top-color: #20aee8;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
-    margin-bottom: 12px;
+}
+
+.lostfound-loading p {
+    margin-top: 13px;
+    color: #718095;
+    font-size: 13px;
 }
 
 
-/* =========================
-   ANIMATIONS
-========================= */
+/* ================================
+   COMMENTS OVERLAY
+================================ */
 
-@keyframes spin {
+.comments-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    background: rgba(10, 35, 50, 0.48);
+    backdrop-filter: blur(7px);
+    animation: overlayAppear 0.25s ease;
+}
+
+
+/* ================================
+   COMMENTS MODAL
+================================ */
+
+.comments-modal {
+    width: 100%;
+    max-width: 600px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: white;
+    border: 1px solid #dceef6;
+    border-radius: 20px;
+    box-shadow: 0 25px 70px rgba(0, 50, 75, 0.2);
+    animation: modalAppear 0.3s ease;
+}
+
+
+/* ================================
+   COMMENTS HEADER
+================================ */
+
+.comments-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 21px 24px;
+    border-bottom: 1px solid #e8f0f4;
+}
+
+.comments-header span {
+    display: block;
+    margin-bottom: 5px;
+    color: #21a4da;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.7px;
+}
+
+.comments-header h2 {
+    margin: 0;
+    color: #172033;
+    font-size: 20px;
+}
+
+.comments-header button {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 9px;
+    background: #f1f8fb;
+    color: #637385;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.comments-header button:hover {
+    background: #e5f5fc;
+    color: #159bd7;
+}
+
+
+/* ================================
+   COMMENTS LIST
+================================ */
+
+.comments-list {
+    flex: 1;
+    min-height: 180px;
+    max-height: 480px;
+    overflow-y: auto;
+    padding: 20px 24px;
+}
+
+.comments-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.comments-list::-webkit-scrollbar-thumb {
+    background: #b9dfed;
+    border-radius: 10px;
+}
+
+.comment {
+    display: flex;
+    gap: 12px;
+    padding: 15px 0;
+    border-bottom: 1px solid #edf2f5;
+}
+
+.comment:first-child {
+    padding-top: 0;
+}
+
+.comment-avatar {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #e7f7fd;
+    color: #159bd7;
+}
+
+.comment-body {
+    flex: 1;
+}
+
+.comment-meta {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 5px;
+}
+
+.comment-meta strong {
+    color: #263448;
+    font-size: 13px;
+}
+
+.comment-meta span {
+    color: #9aa5b2;
+    font-size: 11px;
+}
+
+.comment-body p {
+    margin: 0 0 7px;
+    color: #657286;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.delete-comment-btn {
+    padding: 0;
+    border: none;
+    background: none;
+    color: #d05b5b;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.delete-comment-btn:hover {
+    color: #b83232;
+}
+
+
+/* ================================
+   NO COMMENTS
+================================ */
+
+.no-comments {
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #65b8da;
+}
+
+.no-comments p {
+    margin: 12px 0 4px;
+    color: #4d5d70;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.no-comments span {
+    color: #8995a4;
+    font-size: 12px;
+}
+
+
+/* ================================
+   COMMENTS LOADING
+================================ */
+
+.comments-loading {
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #788698;
+    font-size: 13px;
+}
+
+
+/* ================================
+   COMMENT FORM
+================================ */
+
+.comment-form {
+    display: flex;
+    gap: 10px;
+    padding: 18px 24px;
+    border-top: 1px solid #e8f0f4;
+    background: #fbfdfe;
+}
+
+.comment-form input {
+    flex: 1;
+    min-width: 0;
+    padding: 12px 14px;
+    border: 1px solid #d9e8ef;
+    border-radius: 10px;
+    background: white;
+    color: #172033;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.comment-form input:focus {
+    border-color: #28a9df;
+    box-shadow: 0 0 0 3px rgba(40, 169, 223, 0.1);
+}
+
+.comment-form button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 11px 15px;
+    border: none;
+    border-radius: 10px;
+    background: #20aee8;
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.comment-form button:hover {
+    background: #168fd0;
+    transform: translateY(-1px);
+}
+
+
+/* ================================
+   ANIMATIONS
+================================ */
+
+@keyframes fadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-18px);
+    }
+
     to {
-        transform: rotate(360deg);
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
 @keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes formAppear {
+    from {
+        opacity: 0;
+        transform: translateY(-12px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes cardAppear {
     from {
         opacity: 0;
         transform: translateY(15px);
@@ -1129,63 +947,231 @@
     }
 }
 
-@keyframes slideDown {
+@keyframes overlayAppear {
     from {
         opacity: 0;
-        transform: translateY(-15px);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+    }
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
     }
 }
 
 
-/* =========================
+/* ================================
    RESPONSIVE
-========================= */
+================================ */
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
+
+    .lostfound-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 750px) {
+
+    .lostfound-content {
+        padding: 40px 20px 60px;
+    }
+
+    .lostfound-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .lostfound-header h1 {
+        font-size: 38px;
+    }
+
+    .add-lostfound-btn {
+        width: 100%;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .lostfound-form-card {
+        padding: 23px;
+    }
+
+}
+
+@media (max-width: 600px) {
 
     .lostfound-grid {
         grid-template-columns: 1fr;
     }
 
-    .lostfound-header {
-        align-items: flex-start;
-        gap: 20px;
+    .lostfound-header h1 {
+        font-size: 34px;
+    }
+
+    .item-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .comments-overlay {
+        padding: 12px;
+    }
+
+    .comments-modal {
+        max-height: 92vh;
+        border-radius: 16px;
+    }
+
+    .comments-header,
+    .comments-list,
+    .comment-form {
+        padding-left: 17px;
+        padding-right: 17px;
+    }
+
+    .comment-form {
+        flex-direction: column;
+    }
+
+    .comment-form button {
+        width: 100%;
+    }
+
+}
+
+.item-image {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+    cursor: zoom-in;
+}
+
+.item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.item-image:hover img {
+    transform: scale(1.06);
+}
+
+.image-zoom-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(15, 108, 170, 0.55);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.item-image:hover .image-zoom-overlay {
+    opacity: 1;
+}
+
+.image-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(8, 30, 48, 0.88);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    animation: imageModalFade 0.25s ease;
+}
+
+.zoomed-item-image {
+    max-width: 90%;
+    max-height: 88vh;
+    object-fit: contain;
+    border-radius: 14px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+    animation: imageZoomIn 0.3s ease;
+}
+
+.image-modal-close {
+    position: absolute;
+    top: 25px;
+    right: 30px;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.image-modal-close:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: rotate(90deg);
+}
+
+@keyframes imageModalFade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes imageZoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
     }
 }
 
 @media (max-width: 600px) {
-
-    .lostfound-content {
-        padding: 35px 18px;
-    }
-
-    .lostfound-header {
-        flex-direction: column;
-    }
-
-    .lostfound-header h1 {
-        font-size: 29px;
-    }
-
-    .create-post-btn {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .lostfound-form-card {
+    .image-modal-overlay {
         padding: 20px;
     }
 
-    .lostfound-card {
-        padding: 19px;
+    .zoomed-item-image {
+        max-width: 95%;
+        max-height: 80vh;
     }
 
-    .lostfound-actions {
-        flex-direction: column;
+    .image-modal-close {
+        top: 15px;
+        right: 15px;
     }
 }
