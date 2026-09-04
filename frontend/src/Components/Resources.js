@@ -259,26 +259,32 @@ function Resources({ onNavigate }) {
   };
 
   const handleDownload = async (resource) => {
-    try {
-      const response = await API.patch(`resources/${resource.id}/download/`);
+  try {
+    const response = await API.patch(
+      `resources/${resource.id}/download/`
+    );
 
-      setResources(
-        resources.map((item) =>
-          item.id === resource.id
-            ? {
-                ...item,
-                download_count: response.data.download_count,
-              }
-            : item,
-        ),
-      );
+    setResources(
+      resources.map((item) =>
+        item.id === resource.id
+          ? {
+              ...item,
+              download_count: response.data.download_count,
+            }
+          : item
+      )
+    );
 
-      window.open(`http://127.0.0.1:8000${resource.file}`, "_blank");
-    } catch (error) {
-      console.error("Download error:", error);
-      alert("Failed to download resource.");
-    }
-  };
+    window.location.href = resource.file;
+
+  } catch (error) {
+    console.error("Download error:", error);
+    console.log("Status:", error.response?.status);
+    console.log("Response:", error.response?.data);
+
+    alert("Failed to download resource.");
+  }
+};
 
   return (
     <div className="resources-page">
