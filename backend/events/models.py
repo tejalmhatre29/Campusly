@@ -30,3 +30,21 @@ class Event(models.Model):
 
     def __str__(self):
         return self.title
+
+    registration_enabled = models.BooleanField(
+        default=False
+    )
+
+    registration_link = models.URLField(
+        blank=True,
+        null=True
+    )
+
+    registration_deadline = models.DateTimeField(
+        blank=True,
+        null=True
+    )
+
+    registration_details = models.TextField(
+        blank=True
+    )
