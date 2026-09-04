@@ -2,45 +2,75 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from .models import Resource, ResourceBookmark
-from .serializers import ResourceSerializer, ResourceBookmarkSerializer,ResourceLikeSerializer
-from .models import Resource, ResourceBookmark, ResourceLike
+from .models import (
+    Resource,
+    ResourceBookmark,
+    ResourceLike,
+    ResourceRating,
+)
+
+from .serializers import (
+    ResourceSerializer,
+    ResourceBookmarkSerializer,
+    ResourceLikeSerializer,
+    ResourceRatingSerializer,
+)
 
 
 class ResourceListCreateView(generics.ListCreateAPIView):
+
     queryset = Resource.objects.all().order_by('-created_at')
+
     serializer_class = ResourceSerializer
+
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        serializer.save(uploaded_by=self.request.user)
+
+        serializer.save(
+            uploaded_by=self.request.user
+        )
 
 
 class ResourceDeleteView(generics.DestroyAPIView):
+
     serializer_class = ResourceSerializer
+
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Resource.objects.filter(uploaded_by=self.request.user)
+
+        return Resource.objects.filter(
+            uploaded_by=self.request.user
+        )
+
 
 class MyBookmarksView(generics.ListAPIView):
+
     serializer_class = ResourceBookmarkSerializer
+
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+
         return ResourceBookmark.objects.filter(
             user=self.request.user
         )
 
 
 class BookmarkResourceView(generics.CreateAPIView):
+
     serializer_class = ResourceBookmarkSerializer
+
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
+
         resource_id = self.request.data.get('resource')
 
-        resource = Resource.objects.get(id=resource_id)
+        resource = Resource.objects.get(
+            id=resource_id
+        )
 
         ResourceBookmark.objects.get_or_create(
             user=self.request.user,
@@ -49,9 +79,11 @@ class BookmarkResourceView(generics.CreateAPIView):
 
 
 class RemoveBookmarkView(generics.DestroyAPIView):
+
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, *args, **kwargs):
+
         resource_id = kwargs.get('resource_id')
 
         bookmark = ResourceBookmark.objects.filter(
@@ -60,6 +92,7 @@ class RemoveBookmarkView(generics.DestroyAPIView):
         ).first()
 
         if bookmark:
+
             bookmark.delete()
 
             return Response(
@@ -72,14 +105,20 @@ class RemoveBookmarkView(generics.DestroyAPIView):
             status=404
         )
 
+
 class LikeResourceView(generics.CreateAPIView):
+
     serializer_class = ResourceLikeSerializer
+
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
+
         resource_id = self.request.data.get('resource')
 
-        resource = Resource.objects.get(id=resource_id)
+        resource = Resource.objects.get(
+            id=resource_id
+        )
 
         ResourceLike.objects.get_or_create(
             user=self.request.user,
@@ -88,9 +127,11 @@ class LikeResourceView(generics.CreateAPIView):
 
 
 class RemoveLikeView(generics.DestroyAPIView):
+
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, *args, **kwargs):
+
         resource_id = kwargs.get('resource_id')
 
         like = ResourceLike.objects.filter(
@@ -99,6 +140,7 @@ class RemoveLikeView(generics.DestroyAPIView):
         ).first()
 
         if like:
+
             like.delete()
 
             return Response(
@@ -110,11 +152,74 @@ class RemoveLikeView(generics.DestroyAPIView):
             {"message": "Like not found"},
             status=404
         )
+
+
 class MyLikesView(generics.ListAPIView):
+
     serializer_class = ResourceLikeSerializer
+
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+
         return ResourceLike.objects.filter(
             user=self.request.user
+        )
+
+
+class DownloadResourceView(generics.UpdateAPIView):
+
+    queryset = Resource.objects.all()
+
+    serializer_class = ResourceSerializer
+
+    permission_classes = [IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+
+        resource = self.get_object()
+
+        resource.downloads += 1
+
+        resource.save(
+            update_fields=['downloads']
+        )
+
+        return Response(
+            ResourceSerializer(
+                resource,
+                context={'request': request}
+            ).data
+        )
+
+
+class RateResourceView(generics.CreateAPIView):
+
+    serializer_class = ResourceRatingSerializer
+
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+
+        resource_id = request.data.get('resource')
+
+        rating_value = request.data.get('rating')
+
+        resource = Resource.objects.get(
+            id=resource_id
+        )
+
+        rating, created = ResourceRating.objects.update_or_create(
+            user=request.user,
+            resource=resource,
+            defaults={
+                'rating': rating_value
+            }
+        )
+
+        serializer = self.get_serializer(rating)
+
+        return Response(
+            serializer.data,
+            status=201 if created else 200
         )

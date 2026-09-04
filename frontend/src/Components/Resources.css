@@ -938,3 +938,130 @@
     justify-content: center;
     gap: 8px;
 }
+
+/* ============================= */
+/* Resource Stats */
+/* ============================= */
+
+.resource-stats {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 14px 0;
+  padding: 10px 0;
+  border-top: 1px solid #eef0f4;
+  border-bottom: 1px solid #eef0f4;
+}
+
+/* Rating */
+
+.rating-section {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.star-btn {
+  border: none;
+  background: transparent;
+  padding: 2px;
+  cursor: pointer;
+  color: #f5b301;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.star-btn:hover {
+  transform: scale(1.1);
+}
+
+.star-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.rating-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: #596579;
+  min-width: 25px;
+}
+
+
+/* Like */
+
+.like-btn {
+  border: none;
+  background: transparent;
+  color: #596579;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.like-btn:hover {
+  color: #172033;
+}
+
+.like-btn svg {
+  transition: transform 0.2s ease;
+}
+
+.like-btn:hover svg {
+  transform: scale(1.1);
+}
+
+
+/* Download Count */
+
+.download-count {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #596579;
+  font-size: 13px;
+}
+
+.download-count svg {
+  width: 16px;
+  height: 16px;
+}
+
+
+/* Download Button */
+
+.download-btn {
+  width: 100%;
+  border: none;
+  background: #f1f4f9;
+  color: #172033;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition: all 0.2s ease;
+}
+
+.download-btn:hover {
+  background: #e5e9f0;
+}
+
+.download-btn svg {
+  width: 16px;
+  height: 16px;
+}

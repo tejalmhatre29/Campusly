@@ -1,13 +1,3 @@
-# from django.urls import path
-# from .views import ResourceListCreateView, ResourceDeleteView
-
-
-
-# urlpatterns = [
-#     path('', ResourceListCreateView.as_view(), name='resource-list-create'),
-#     path('<int:pk>/', ResourceDeleteView.as_view(), name='resource-delete'),
-# ]
-
 from django.urls import path
 
 from .views import (
@@ -19,10 +9,13 @@ from .views import (
     LikeResourceView,
     RemoveLikeView,
     MyLikesView,
+    DownloadResourceView,
+    RateResourceView,
 )
 
 
 urlpatterns = [
+
     path(
         '',
         ResourceListCreateView.as_view(),
@@ -30,10 +23,16 @@ urlpatterns = [
     ),
 
     path(
-        '<int:pk>/',
-        ResourceDeleteView.as_view(),
-        name='resource-delete'
-    ),
+    '<int:pk>/download/',
+    DownloadResourceView.as_view(),
+    name='download-resource'
+),
+
+path(
+    '<int:pk>/',
+    ResourceDeleteView.as_view(),
+    name='resource-delete'
+),
 
     path(
         'bookmark/',
@@ -48,26 +47,38 @@ urlpatterns = [
     ),
 
     path(
-    'bookmarks/',
-    MyBookmarksView.as_view(),
-    name='my-bookmarks'
-),
+        'bookmarks/',
+        MyBookmarksView.as_view(),
+        name='my-bookmarks'
+    ),
 
-path(
-    'like/',
-    LikeResourceView.as_view(),
-    name='like-resource'
-),
+    path(
+        'like/',
+        LikeResourceView.as_view(),
+        name='like-resource'
+    ),
 
-path(
-    'like/<int:resource_id>/',
-    RemoveLikeView.as_view(),
-    name='remove-like'
-),
+    path(
+        'like/<int:resource_id>/',
+        RemoveLikeView.as_view(),
+        name='remove-like'
+    ),
 
-path(
-    'likes/',
-    MyLikesView.as_view(),
-    name='my-likes'
-),
+    path(
+        'likes/',
+        MyLikesView.as_view(),
+        name='my-likes'
+    ),
+
+    path(
+        '<int:pk>/download/',
+        DownloadResourceView.as_view(),
+        name='download-resource'
+    ),
+
+    path(
+        'rate/',
+        RateResourceView.as_view(),
+        name='rate-resource'
+    ),
 ]

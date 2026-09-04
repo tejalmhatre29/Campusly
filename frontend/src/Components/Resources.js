@@ -16,7 +16,8 @@ import {
   Trash2,
   Download,
   Plus,
-  Search
+  Search,
+  Star,
 } from "lucide-react";
 
 function Resources({ onNavigate }) {
@@ -28,7 +29,8 @@ function Resources({ onNavigate }) {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [bookmarkedResources, setBookmarkedResources] = useState([]);
   const [likedResources, setLikedResources] = useState([]);
-const [likeCounts, setLikeCounts] = useState({});
+  const [likeCounts, setLikeCounts] = useState({});
+  const [ratingLoading, setRatingLoading] = useState(null);
 
   const token = localStorage.getItem("access_token");
 
@@ -49,56 +51,46 @@ const [likeCounts, setLikeCounts] = useState({});
     description: "",
     file: null,
   });
-useEffect(() => {
-  const fetchResources = async () => {
-    try {
-      // Fetch resources
-      const response = await API.get("resources/");
-      setResources(response.data);
+  useEffect(() => {
+    const fetchResources = async () => {
+      try {
+        // Fetch resources
+        const response = await API.get("resources/");
+        setResources(response.data);
 
-      // Fetch bookmarks
-      const bookmarkResponse = await API.get(
-        "resources/bookmarks/"
-      );
+        // Fetch bookmarks
+        const bookmarkResponse = await API.get("resources/bookmarks/");
 
-      const bookmarkIds = bookmarkResponse.data.map(
-        (bookmark) => bookmark.resource
-      );
+        const bookmarkIds = bookmarkResponse.data.map(
+          (bookmark) => bookmark.resource,
+        );
 
-      setBookmarkedResources(bookmarkIds);
+        setBookmarkedResources(bookmarkIds);
 
-      // Fetch likes
-      const likeResponse = await API.get(
-        "resources/likes/"
-      );
+        // Fetch likes
+        const likeResponse = await API.get("resources/likes/");
 
-      const likedIds = likeResponse.data.map(
-        (like) => like.resource
-      );
+        const likedIds = likeResponse.data.map((like) => like.resource);
 
-      setLikedResources(likedIds);
+        setLikedResources(likedIds);
 
-      // Set like counts
-      const counts = {};
+        // Set like counts
+        const counts = {};
 
-      response.data.forEach((resource) => {
-        counts[resource.id] = resource.like_count || 0;
-      });
+        response.data.forEach((resource) => {
+          counts[resource.id] = resource.like_count || 0;
+        });
 
-      setLikeCounts(counts);
+        setLikeCounts(counts);
+      } catch (error) {
+        console.error("Error fetching resources:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    } catch (error) {
-      console.error(
-        "Error fetching resources:",
-        error
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchResources();
-}, []);
+    fetchResources();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -219,43 +211,74 @@ useEffect(() => {
     const isLiked = likedResources.includes(resourceId);
 
     try {
-        if (isLiked) {
-            await API.delete(`resources/like/${resourceId}/`);
+      if (isLiked) {
+        await API.delete(`resources/like/${resourceId}/`);
 
-            setLikedResources(
-                likedResources.filter(
-                    (id) => id !== resourceId
-                )
-            );
+        setLikedResources(likedResources.filter((id) => id !== resourceId));
 
-            setLikeCounts({
-                ...likeCounts,
-                [resourceId]: Math.max(
-                    0,
-                    (likeCounts[resourceId] || 0) - 1
-                ),
-            });
-        } else {
-            await API.post("resources/like/", {
-                resource: resourceId,
-            });
+        setLikeCounts({
+          ...likeCounts,
+          [resourceId]: Math.max(0, (likeCounts[resourceId] || 0) - 1),
+        });
+      } else {
+        await API.post("resources/like/", {
+          resource: resourceId,
+        });
 
-            setLikedResources([
-                ...likedResources,
-                resourceId,
-            ]);
+        setLikedResources([...likedResources, resourceId]);
 
-            setLikeCounts({
-                ...likeCounts,
-                [resourceId]:
-                    (likeCounts[resourceId] || 0) + 1,
-            });
-        }
+        setLikeCounts({
+          ...likeCounts,
+          [resourceId]: (likeCounts[resourceId] || 0) + 1,
+        });
+      }
     } catch (error) {
-        console.error("Like error:", error);
-        alert("Failed to update like.");
+      console.error("Like error:", error);
+      alert("Failed to update like.");
     }
-};
+  };
+
+  const handleRating = async (resourceId, rating) => {
+    try {
+      setRatingLoading(resourceId);
+
+      await API.post("resources/rate/", {
+        resource: resourceId,
+        rating: rating,
+      });
+
+      const response = await API.get("resources/");
+
+      setResources(response.data);
+    } catch (error) {
+      console.error("Rating error:", error);
+      alert("Failed to submit rating.");
+    } finally {
+      setRatingLoading(null);
+    }
+  };
+
+  const handleDownload = async (resource) => {
+    try {
+      const response = await API.patch(`resources/${resource.id}/download/`);
+
+      setResources(
+        resources.map((item) =>
+          item.id === resource.id
+            ? {
+                ...item,
+                download_count: response.data.download_count,
+              }
+            : item,
+        ),
+      );
+
+      window.open(`http://127.0.0.1:8000${resource.file}`, "_blank");
+    } catch (error) {
+      console.error("Download error:", error);
+      alert("Failed to download resource.");
+    }
+  };
 
   return (
     <div className="resources-page">
@@ -266,21 +289,21 @@ useEffect(() => {
         <div className="resources-header">
           <div>
             <h1>
-  <BookOpen size={32} />
-  Campus Resources
-</h1>
+              <BookOpen size={32} />
+              Campus Resources
+            </h1>
             <p>
               Notes, PYQs, assignments and study material shared by students.
             </p>
           </div>
 
           <button
-  className="add-resource-btn"
-  onClick={() => setShowForm(!showForm)}
->
-  <Plus size={18} />
-  Add Resource
-</button>
+            className="add-resource-btn"
+            onClick={() => setShowForm(!showForm)}
+          >
+            <Plus size={18} />
+            Add Resource
+          </button>
         </div>
 
         {/* Add Resource Form */}
@@ -327,67 +350,65 @@ useEffect(() => {
         )}
 
         <div className="search-box">
-  <Search size={19} />
+          <Search size={19} />
 
-  <input
-    type="text"
-    placeholder="Search resources by title, subject or description..."
-    value={searchTerm}
-    onChange={(e) => setSearchTerm(e.target.value)}
-  />
-</div>
+          <input
+            type="text"
+            placeholder="Search resources by title, subject or description..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
 
         <div className="resource-filters">
+          <button
+            className={categoryFilter === "all" ? "active" : ""}
+            onClick={() => setCategoryFilter("all")}
+          >
+            <Folder size={16} />
+            All
+          </button>
 
-  <button
-    className={categoryFilter === "all" ? "active" : ""}
-    onClick={() => setCategoryFilter("all")}
-  >
-    <Folder size={16} />
-    All
-  </button>
+          <button
+            className={categoryFilter === "notes" ? "active" : ""}
+            onClick={() => setCategoryFilter("notes")}
+          >
+            <BookOpen size={16} />
+            Notes
+          </button>
 
-  <button
-    className={categoryFilter === "notes" ? "active" : ""}
-    onClick={() => setCategoryFilter("notes")}
-  >
-    <BookOpen size={16} />
-    Notes
-  </button>
+          <button
+            className={categoryFilter === "pyq" ? "active" : ""}
+            onClick={() => setCategoryFilter("pyq")}
+          >
+            <FileText size={16} />
+            PYQ
+          </button>
 
-  <button
-    className={categoryFilter === "pyq" ? "active" : ""}
-    onClick={() => setCategoryFilter("pyq")}
-  >
-    <FileText size={16} />
-    PYQ
-  </button>
+          <button
+            className={categoryFilter === "book" ? "active" : ""}
+            onClick={() => setCategoryFilter("book")}
+          >
+            <BookMarked size={16} />
+            Books
+          </button>
 
-  <button
-    className={categoryFilter === "book" ? "active" : ""}
-    onClick={() => setCategoryFilter("book")}
-  >
-    <BookMarked size={16} />
-    Books
-  </button>
+          <button
+            className={categoryFilter === "assignment" ? "active" : ""}
+            onClick={() => setCategoryFilter("assignment")}
+          >
+            <ClipboardList size={16} />
+            Assignments
+          </button>
 
-  <button
-    className={categoryFilter === "assignment" ? "active" : ""}
-    onClick={() => setCategoryFilter("assignment")}
-  >
-    <ClipboardList size={16} />
-    Assignments
-  </button>
-
-  <button
-    className={categoryFilter === "other" ? "active" : ""}
-    onClick={() => setCategoryFilter("other")}
-  >
-    <Folder size={16} />
-    Other
-  </button>
-
-</div>
+          <button
+            className={categoryFilter === "other" ? "active" : ""}
+            onClick={() => setCategoryFilter("other")}
+          >
+            <Folder size={16} />
+            Other
+          </button>
+        </div>
 
         {/* Resources */}
         <div className="resource-grid">
@@ -416,60 +437,87 @@ useEffect(() => {
                   Uploaded by: {resource.uploaded_by}
                 </p>
                 <p className="resource-contact">
-  <User size={15} />
-  {resource.uploader_name}
-</p>
+                  <User size={15} />
+                  {resource.uploader_name}
+                </p>
 
-<p className="resource-contact">
-  <Phone size={15} />
-  {resource.uploader_phone}
-</p>
-
-                <button
-  className="bookmark-btn"
-  onClick={() => toggleBookmark(resource.id)}
->
-  <Bookmark
-    size={16}
-    fill={
-      bookmarkedResources.includes(resource.id)
-        ? "currentColor"
-        : "none"
-    }
-  />
-
-  {bookmarkedResources.includes(resource.id)
-    ? "Saved"
-    : "Save"}
-</button>
+                <p className="resource-contact">
+                  <Phone size={15} />
+                  {resource.uploader_phone}
+                </p>
 
                 <button
-  className="like-btn"
-  onClick={() => toggleLike(resource.id)}
->
-  <ThumbsUp
-    size={16}
-    fill={
-      likedResources.includes(resource.id)
-        ? "currentColor"
-        : "none"
-    }
-  />
+                  className="bookmark-btn"
+                  onClick={() => toggleBookmark(resource.id)}
+                >
+                  <Bookmark
+                    size={16}
+                    fill={
+                      bookmarkedResources.includes(resource.id)
+                        ? "currentColor"
+                        : "none"
+                    }
+                  />
 
-  Helpful
+                  {bookmarkedResources.includes(resource.id) ? "Saved" : "Save"}
+                </button>
 
-  <span>
-    {likeCounts[resource.id] || 0}
-  </span>
-</button>
-                <a
-  href={`http://127.0.0.1:8000${resource.file}`}
-  target="_blank"
-  rel="noreferrer"
->
-  <Download size={16} />
-  View / Download
-</a>
+                <div className="resource-stats">
+                  <div className="rating-section">
+                    <div className="stars">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          className="star-btn"
+                          onClick={() => handleRating(resource.id, star)}
+                          disabled={ratingLoading === resource.id}
+                          title={`Rate ${star} star${star > 1 ? "s" : ""}`}
+                        >
+                          <Star
+                            size={18}
+                            fill={
+                              star <= Math.round(resource.average_rating || 0)
+                                ? "currentColor"
+                                : "none"
+                            }
+                          />
+                        </button>
+                      ))}
+                    </div>
+
+                    <span className="rating-value">
+                      {resource.average_rating || "0.0"}
+                    </span>
+                  </div>
+
+                  <button
+                    className="like-btn"
+                    onClick={() => toggleLike(resource.id)}
+                  >
+                    <ThumbsUp
+                      size={16}
+                      fill={
+                        likedResources.includes(resource.id)
+                          ? "currentColor"
+                          : "none"
+                      }
+                    />
+                    <span>{likeCounts[resource.id] || 0}</span>
+                  </button>
+
+                  <span className="download-count">
+                    <Download size={16} />
+                    {resource.download_count || 0}
+                  </span>
+                </div>
+
+                <button
+                  className="download-btn"
+                  onClick={() => handleDownload(resource)}
+                >
+                  <Download size={16} />
+                  View / Download
+                </button>
 
                 {String(resource.uploaded_by_id) === String(currentUserId) && (
                   <button
@@ -478,13 +526,13 @@ useEffect(() => {
                     disabled={deletingId === resource.id}
                   >
                     {deletingId === resource.id ? (
-  "Deleting..."
-) : (
-  <>
-    <Trash2 size={16} />
-    Delete Resource
-  </>
-)}
+                      "Deleting..."
+                    ) : (
+                      <>
+                        <Trash2 size={16} />
+                        Delete Resource
+                      </>
+                    )}
                   </button>
                 )}
               </div>
