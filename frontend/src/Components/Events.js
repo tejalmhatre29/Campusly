@@ -59,35 +59,41 @@ function Events({ onNavigate }) {
   };
 
   const handleCreateEvent = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      await API.post("events/", formData);
+  try {
+    const eventData = {
+      ...formData,
+      registration_deadline:
+        formData.registration_deadline || null,
+    };
 
-      alert("Event created successfully!");
+    await API.post("events/", eventData);
 
-      setFormData({
-    title: '',
-    description: '',
-    category: '',
-    venue: '',
-    event_date: '',
-    registration_enabled: false,
-    registration_link: '',
-    registration_deadline: '',
-    registration_details: ''
-});
+    alert("Event created successfully!");
 
-      setShowForm(false);
+    setFormData({
+      title: "",
+      description: "",
+      category: "",
+      venue: "",
+      event_date: "",
+      registration_enabled: false,
+      registration_link: "",
+      registration_deadline: "",
+      registration_details: "",
+    });
 
-      const response = await API.get("events/");
-      setEvents(response.data);
-    } catch (error) {
-      console.error("Event creation error:", error);
-      console.log(error.response?.data);
-      alert("Failed to create event.");
-    }
-  };
+    setShowForm(false);
+
+    const response = await API.get("events/");
+    setEvents(response.data);
+  } catch (error) {
+    console.error("Event creation error:", error);
+    console.log("Backend response:", error.response?.data);
+    alert("Failed to create event.");
+  }
+};
 
   const handleDeleteEvent = async (eventId) => {
     const confirmDelete = window.confirm(
