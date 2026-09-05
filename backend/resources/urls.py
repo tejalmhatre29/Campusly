@@ -71,12 +71,6 @@ path(
     ),
 
     path(
-        '<int:pk>/download/',
-        DownloadResourceView.as_view(),
-        name='download-resource'
-    ),
-
-    path(
         'rate/',
         RateResourceView.as_view(),
         name='rate-resource'

@@ -1,6 +1,7 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django.db.models import Count, Avg
 
 from .models import (
     Resource,
@@ -19,14 +20,21 @@ from .serializers import (
 
 class ResourceListCreateView(generics.ListCreateAPIView):
 
-    queryset = Resource.objects.all().order_by('-created_at')
+    queryset = (
+        Resource.objects
+        .select_related('uploaded_by')
+        .annotate(
+            total_likes=Count('likes', distinct=True),
+            avg_rating=Avg('ratings__rating')
+        )
+        .order_by('-created_at')
+    )
 
     serializer_class = ResourceSerializer
 
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-
         serializer.save(
             uploaded_by=self.request.user
         )

@@ -32,17 +32,10 @@ class ResourceSerializer(serializers.ModelSerializer):
         return name or obj.uploaded_by.username
 
     def get_like_count(self, obj):
-        return obj.likes.count()
+        return obj.total_likes
 
     def get_average_rating(self, obj):
-        ratings = obj.ratings.all()
-
-        if not ratings.exists():
-            return 0
-
-        total = sum(rating.rating for rating in ratings)
-
-        return round(total / ratings.count(), 1)
+        return round(obj.avg_rating, 1) if obj.avg_rating is not None else 0
 
     class Meta:
         model = Resource
