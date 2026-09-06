@@ -8,6 +8,10 @@ import {
   ArrowRight,
   Sparkles,
   GraduationCap,
+  Instagram,
+Linkedin,
+Github,
+Mail,
 } from "lucide-react";
 import "./Home.css";
 
@@ -182,6 +186,70 @@ function Home({ onNavigate }) {
         </section>
 
       </main>
+            <footer className="home-footer">
+
+  <div className="footer-content">
+
+    <div className="footer-brand">
+      <h2>Campusly</h2>
+      <p>Your campus, connected.</p>
+
+      <div className="footer-socials">
+        <a href="#" aria-label="Instagram">
+          <Instagram size={18} />
+        </a>
+
+        <a href="#" aria-label="LinkedIn">
+          <Linkedin size={18} />
+        </a>
+
+        <a href="#" aria-label="GitHub">
+          <Github size={18} />
+        </a>
+
+        <a href="#" aria-label="Email">
+          <Mail size={18} />
+        </a>
+      </div>
+    </div>
+
+
+    <div className="footer-links">
+      <h4>Explore</h4>
+
+      <button onClick={() => onNavigate("home")}>
+        Home
+      </button>
+
+      <button onClick={() => onNavigate("resources")}>
+        Resources
+      </button>
+
+      <button onClick={() => onNavigate("events")}>
+        Events
+      </button>
+
+      <button onClick={() => onNavigate("lostfound")}>
+        Lost & Found
+      </button>
+    </div>
+
+
+    <div className="footer-tagline">
+      <span>Built for students.</span>
+      <p>
+        Learn, connect and make the most of your campus journey.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div className="footer-bottom">
+    <p>© 2026 Campusly · All rights reserved</p>
+  </div>
+
+</footer>
     </div>
   );
 }

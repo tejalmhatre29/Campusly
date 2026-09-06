@@ -5,7 +5,7 @@ import Home from './Components/Home';
 import Resources from './Components/Resources';
 import Events from './Components/Events';
 import LostFound from './Components/LostFound';
-
+import Profile from './Components/Profile';
 import './App.css';
 
 function App() {
@@ -57,6 +57,14 @@ if (currentPage === 'events') {
 if (currentPage === 'lostfound') {
     return (
         <LostFound
+            onNavigate={(page) => setCurrentPage(page)}
+        />
+    );
+}
+
+if (currentPage === 'profile') {
+    return (
+        <Profile
             onNavigate={(page) => setCurrentPage(page)}
         />
     );

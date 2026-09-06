@@ -19,8 +19,18 @@ class UserSerializer(serializers.ModelSerializer):
             'phone_number',
             'profile_picture',
         ]
+
+        read_only_fields = [
+            'id',
+            'username',
+            'email',
+        ]
+
         extra_kwargs = {
-            'password': {'write_only': True}
+            'password': {
+                'write_only': True,
+                'required': False
+            }
         }
 
     def create(self, validated_data):

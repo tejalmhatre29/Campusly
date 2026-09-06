@@ -1,5 +1,5 @@
 import "./Navbar.css";
-import { PackageSearch } from 'lucide-react';
+import { PackageSearch } from "lucide-react";
 
 function Navbar({ onNavigate }) {
   const handleLogout = () => {
@@ -29,7 +29,9 @@ function Navbar({ onNavigate }) {
           Lost & Found
         </button>
 
-        <button className="nav-btn">Profile</button>
+        <button className="nav-btn" onClick={() => onNavigate("profile")}>
+          Profile
+        </button>
 
         <button className="logout-btn" onClick={handleLogout}>
           Logout
