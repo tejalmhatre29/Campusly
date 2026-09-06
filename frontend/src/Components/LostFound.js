@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../api";
 import Navbar from "./Navbar";
+import { jwtDecode } from "jwt-decode";
 import {
   Search,
   Plus,
@@ -38,6 +39,19 @@ function LostFound({ onNavigate }) {
     date: "",
     image: null,
   });
+
+  const token = localStorage.getItem("access_token");
+
+let currentUserId = null;
+
+if (token) {
+  try {
+    const decodedToken = jwtDecode(token);
+    currentUserId = decodedToken.user_id;
+  } catch (error) {
+    console.error("Invalid token");
+  }
+}
 
   const fetchItems = async () => {
     try {
@@ -524,13 +538,15 @@ function LostFound({ onNavigate }) {
                       )}
                     </div>
 
-                    <button
-                      className="delete-item-btn"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      <Trash2 size={15} />
-                      Delete
-                    </button>
+                    {String(item.posted_by_id) === String(currentUserId) && (
+  <button
+    className="delete-item-btn"
+    onClick={() => handleDelete(item.id)}
+  >
+    <Trash2 size={15} />
+    Delete
+  </button>
+)}
                   </div>
                 </article>
               ))}
