@@ -1,5 +1,12 @@
 from rest_framework import serializers
-from .models import Resource, ResourceBookmark, ResourceLike, ResourceRating
+from django.db.models import Avg
+
+from .models import (
+    Resource,
+    ResourceBookmark,
+    ResourceLike,
+    ResourceRating
+)
 
 
 class ResourceSerializer(serializers.ModelSerializer):
@@ -32,13 +39,32 @@ class ResourceSerializer(serializers.ModelSerializer):
         return name or obj.uploaded_by.username
 
     def get_like_count(self, obj):
-        return obj.total_likes
+        if hasattr(obj, 'total_likes'):
+            return obj.total_likes
+
+        return obj.likes.count()
 
     def get_average_rating(self, obj):
-        return round(obj.avg_rating, 1) if obj.avg_rating is not None else 0
+        if hasattr(obj, 'avg_rating'):
+            return (
+                round(obj.avg_rating, 1)
+                if obj.avg_rating is not None
+                else 0
+            )
+
+        average = obj.ratings.aggregate(
+            average=Avg('rating')
+        )['average']
+
+        return (
+            round(average, 1)
+            if average is not None
+            else 0
+        )
 
     class Meta:
         model = Resource
+
         fields = [
             'id',
             'title',
@@ -72,6 +98,7 @@ class ResourceBookmarkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ResourceBookmark
+
         fields = [
             'id',
             'resource',
@@ -88,6 +115,7 @@ class ResourceLikeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ResourceLike
+
         fields = [
             'id',
             'resource',
@@ -104,6 +132,7 @@ class ResourceRatingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ResourceRating
+
         fields = [
             'id',
             'resource',

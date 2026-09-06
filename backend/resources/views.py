@@ -177,7 +177,14 @@ class MyLikesView(generics.ListAPIView):
 
 class DownloadResourceView(generics.UpdateAPIView):
 
-    queryset = Resource.objects.all()
+    queryset = (
+        Resource.objects
+        .select_related('uploaded_by')
+        .annotate(
+            total_likes=Count('likes', distinct=True),
+            avg_rating=Avg('ratings__rating')
+        )
+    )
 
     serializer_class = ResourceSerializer
 
