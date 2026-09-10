@@ -23,12 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-b3(q@gp2(i5l$43073vjh%fr%7cxo(dmy3fv^$0m6b&#v(8hj3'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 
 # Application definition
@@ -46,6 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'events',
     'lostfound',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -131,7 +131,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
@@ -155,9 +155,30 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
+AWS_S3_ENDPOINT_URL = os.getenv("SUPABASE_S3_ENDPOINT")
+AWS_S3_CUSTOM_DOMAIN = os.getenv("SUPABASE_STORAGE_DOMAIN")
+AWS_ACCESS_KEY_ID = os.getenv("SUPABASE_S3_ACCESS_KEY")
+AWS_SECRET_ACCESS_KEY = os.getenv("SUPABASE_S3_SECRET_KEY")
+AWS_S3_REGION_NAME = os.getenv("SUPABASE_S3_REGION")
+
+AWS_STORAGE_BUCKET_NAME = "campusly-media"
+
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+AWS_QUERYSTRING_AUTH = False
 
 
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = os.getenv(
+    'CORS_ALLOWED_ORIGINS',
+    'http://localhost:3000'
+).split(',')
