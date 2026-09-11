@@ -194,7 +194,7 @@ function Home({ onNavigate }) {
       <h2>Campusly</h2>
       <p>Your campus, connected.</p>
 
-      <div className="footer-socials">
+     <div className="footer-socials">
   <button type="button" aria-label="Instagram">
     <Instagram size={18} />
   </button>
