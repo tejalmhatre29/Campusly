@@ -182,4 +182,5 @@ CORS_ALLOWED_ORIGINS = os.getenv(
     'CORS_ALLOWED_ORIGINS',
     'http://localhost:3000',
     "https://campusly-qkkxxe1od-na-9f6e.vercel.app",
+    "https://campusly-ae7k7mx8x-na-9f6e.vercel.app"
 ).split(',')
