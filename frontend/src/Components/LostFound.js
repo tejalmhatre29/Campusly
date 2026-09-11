@@ -3,7 +3,6 @@ import API from "../api";
 import Navbar from "./Navbar";
 import { jwtDecode } from "jwt-decode";
 import {
-  Search,
   Plus,
   MapPin,
   Calendar,

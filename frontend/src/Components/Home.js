@@ -195,22 +195,22 @@ function Home({ onNavigate }) {
       <p>Your campus, connected.</p>
 
       <div className="footer-socials">
-        <a href="#" aria-label="Instagram">
-          <Instagram size={18} />
-        </a>
+  <button type="button" aria-label="Instagram">
+    <Instagram size={18} />
+  </button>
 
-        <a href="#" aria-label="LinkedIn">
-          <Linkedin size={18} />
-        </a>
+  <button type="button" aria-label="LinkedIn">
+    <Linkedin size={18} />
+  </button>
 
-        <a href="#" aria-label="GitHub">
-          <Github size={18} />
-        </a>
+  <button type="button" aria-label="GitHub">
+    <Github size={18} />
+  </button>
 
-        <a href="#" aria-label="Email">
-          <Mail size={18} />
-        </a>
-      </div>
+  <button type="button" aria-label="Email">
+    <Mail size={18} />
+  </button>
+</div>
     </div>
 
 
