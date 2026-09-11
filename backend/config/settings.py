@@ -180,5 +180,6 @@ AWS_QUERYSTRING_AUTH = False
 
 CORS_ALLOWED_ORIGINS = os.getenv(
     'CORS_ALLOWED_ORIGINS',
-    'http://localhost:3000'
+    'http://localhost:3000',
+    "https://campusly-qkkxxe1od-na-9f6e.vercel.app",
 ).split(',')
